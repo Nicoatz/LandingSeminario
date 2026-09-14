@@ -78,6 +78,8 @@ export default function SearchBar({ filters, onChange, resultCount }) {
             <div className={styles.priceInline}>
               <InputNumber
                 className={styles.priceInlineInput}
+                style={{ width: 168 }}
+                size="large"
                 controls={false}
                 min={0}
                 max={filters.maxPrice ?? 1000000}
@@ -101,6 +103,8 @@ export default function SearchBar({ filters, onChange, resultCount }) {
               />
               <InputNumber
                 className={styles.priceInlineInput}
+                style={{ width: 168 }}
+                size="large"
                 controls={false}
                 min={filters.minPrice ?? 0}
                 max={1000000}
