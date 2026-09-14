@@ -143,30 +143,3 @@
   font-size: 0.875rem;
   color: rgba(18, 32, 46, 0.7);
 }
-
-.ctaBand {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #e3f2fb;
-  padding: 4rem 1rem;
-}
-
-.ctaLink {
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  color: #004d98;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.ctaLink:hover {
-  color: #003b74;
-}
-
-.ctaLink:focus-visible {
-  outline: 2px solid #004d98;
-  outline-offset: 4px;
-  border-radius: 4px;
-}

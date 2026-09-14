@@ -42,23 +42,17 @@ function StepNode({ step, index }) {
 
 export default function HowItWorks() {
   return (
-    <>
-      <div className={styles.ctaBand}>
-        <a href="#como-funciona" className={styles.ctaLink}>Conocenos!!!</a>
+    <section id="como-funciona" className={styles.section}>
+      <div className={styles.inner}>
+        <h2 className={styles.heading}>De la búsqueda a las llaves, sin intermediarios</h2>
+
+        <ol className={styles.list}>
+          <span aria-hidden="true" className={styles.connector} />
+          {steps.map((step, index) => (
+            <StepNode key={step.title} step={step} index={index} />
+          ))}
+        </ol>
       </div>
-
-      <section id="como-funciona" className={styles.section}>
-        <div className={styles.inner}>
-          <h2 className={styles.heading}>De la búsqueda a las llaves, sin intermediarios</h2>
-
-          <ol className={styles.list}>
-            <span aria-hidden="true" className={styles.connector} />
-            {steps.map((step, index) => (
-              <StepNode key={step.title} step={step} index={index} />
-            ))}
-          </ol>
-        </div>
-      </section>
-    </>
+    </section>
   )
 }
