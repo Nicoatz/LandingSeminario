@@ -1,0 +1,114 @@
+.section {
+  background: linear-gradient(to bottom, #e3f2fb, #f7f9fb);
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 72rem;
+  padding: 3rem 1rem 6rem;
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .inner {
+    padding-bottom: 8rem;
+    padding-top: 5rem;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: #12202e;
+}
+
+@media (min-width: 640px) {
+  .title {
+    font-size: 3rem;
+  }
+}
+
+.subtitle {
+  margin-top: 1.25rem;
+  max-width: 32rem;
+  font-size: 1.125rem;
+  color: rgba(18, 32, 46, 0.7);
+}
+
+.pilot {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #004d98;
+}
+
+.ctaRow {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ghostButton {
+  border-color: rgba(0, 77, 152, 0.2) !important;
+  color: #004d98 !important;
+  background: #ffffff !important;
+}
+
+.ghostButton:hover {
+  background: #e3f2fb !important;
+}
+
+.motif {
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  max-width: 28rem;
+}
+
+@media (min-width: 1024px) {
+  .motif {
+    max-width: none;
+  }
+}
+
+.searchWrap {
+  margin: -4rem auto 0;
+  max-width: 72rem;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .searchWrap {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .searchWrap {
+    margin-top: -6rem;
+  }
+}

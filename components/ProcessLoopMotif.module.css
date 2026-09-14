@@ -1,0 +1,89 @@
+.container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: linear-gradient(to bottom right, #004d98, #003b74, #004d98);
+  box-shadow: 0 25px 50px -12px rgba(0, 77, 152, 0.2);
+}
+
+.svg {
+  height: 100%;
+  width: 100%;
+  padding: 2rem;
+}
+
+.loopDot {
+  animation: loop-travel 8s linear infinite;
+  filter: drop-shadow(0 0 4px rgba(215, 177, 93, 0.9));
+}
+
+.loopNode {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: loop-pulse 8s ease-in-out infinite;
+}
+.loopNode0 {
+  animation-delay: 0s;
+}
+.loopNode1 {
+  animation-delay: 2s;
+}
+.loopNode2 {
+  animation-delay: 4s;
+}
+.loopNode3 {
+  animation-delay: 6s;
+}
+
+@keyframes loop-travel {
+  0% {
+    transform: translate(100px, 38px);
+  }
+  12.5% {
+    transform: translate(143.84px, 56.16px);
+  }
+  25% {
+    transform: translate(162px, 100px);
+  }
+  37.5% {
+    transform: translate(143.84px, 143.84px);
+  }
+  50% {
+    transform: translate(100px, 162px);
+  }
+  62.5% {
+    transform: translate(56.16px, 143.84px);
+  }
+  75% {
+    transform: translate(38px, 100px);
+  }
+  87.5% {
+    transform: translate(56.16px, 56.16px);
+  }
+  100% {
+    transform: translate(100px, 38px);
+  }
+}
+
+@keyframes loop-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  6% {
+    transform: scale(1.16);
+  }
+  14% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loopDot {
+    animation: none;
+    transform: translate(100px, 38px);
+  }
+  .loopNode {
+    animation: none;
+  }
+}
