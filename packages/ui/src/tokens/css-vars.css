@@ -96,4 +96,10 @@
   --rentar-color-info: #1b65a6;
   --rentar-color-neutral: rgba(247, 249, 251, 0.5);
   /* --rentar-color-money y money-ink no cambian: el dorado se mantiene igual en dark. */
+
+  /* Mismo RGB que --rentar-color-bg-page en dark (#0B1420) — lo usan los
+     headers translúcidos/sticky (Header, topbar de /design-system). Sin
+     este override quedaban con el fondo "paper" claro aunque el resto de
+     la página ya estuviera en modo oscuro. */
+  --rentar-color-paper-rgb: 11, 20, 32;
 }

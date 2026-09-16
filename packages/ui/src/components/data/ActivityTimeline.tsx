@@ -37,10 +37,19 @@ export function ActivityTimeline({ events, ...rest }: ActivityTimelineProps) {
       items={events.map((event) => ({
         key: event.id,
         color: DOT_COLOR[event.colorKey ?? 'info'],
-        children: (
+        content: (
           <>
             <p style={{ margin: 0, fontWeight: 600 }}>{event.title}</p>
-            <p style={{ margin: '0.125rem 0 0', fontSize: '0.8125rem', color: 'var(--rentar-color-text-tertiary)' }}>
+            {/*
+              suppressHydrationWarning: el texto relativo ("hace 2 minutos")
+              se recalcula en cada render — casi siempre difiere entre lo que
+              generó el server y el momento en que el cliente hidrata, así
+              que un mismatch acá es esperable y no un bug real.
+            */}
+            <p
+              suppressHydrationWarning
+              style={{ margin: '0.125rem 0 0', fontSize: '0.8125rem', color: 'var(--rentar-color-text-tertiary)' }}
+            >
               {formatRelative(event.date)}
             </p>
             {event.description && (

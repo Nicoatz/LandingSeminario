@@ -36,6 +36,8 @@ interface AppShellProps {
   notifications?: NotificationItem[]
   onLogout?: () => void
   children: ReactNode
+  /** Igual que en `AuthLayout`: `min-height: 100%` en vez de `100vh`, para previsualizarlo acotado. */
+  compact?: boolean
   'data-testid'?: string
 }
 
@@ -53,6 +55,7 @@ export function AppShell({
   notifications = [],
   onLogout,
   children,
+  compact = false,
   ...rest
 }: AppShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -68,7 +71,7 @@ export function AppShell({
   }))
 
   return (
-    <Layout className={styles.layout} {...rest}>
+    <Layout className={`${styles.layout} ${compact ? styles.layoutCompact : ''}`} {...rest}>
       <Sider width={240} className={styles.sider}>
         <div className={styles.logoWrap}>
           <Image src={logo} alt="RentAR" style={{ height: '2rem', width: 'auto' }} />
@@ -81,7 +84,7 @@ export function AppShell({
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         closable={false}
-        width={240}
+        size={240}
         styles={{ body: { padding: 0 } }}
       >
         <div className={styles.logoWrap}>

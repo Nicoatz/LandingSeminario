@@ -18,7 +18,7 @@ export function SimulatedFeatureNotice({ feature, ...rest }: SimulatedFeatureNot
     <Alert
       type="info"
       showIcon
-      message={
+      title={
         feature
           ? `Esta función (${feature}) todavía es simulada — no hay backend conectado en esta etapa.`
           : 'Esta función todavía es simulada — no hay backend conectado en esta etapa.'

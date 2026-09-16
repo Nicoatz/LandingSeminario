@@ -2,6 +2,10 @@
   min-height: 100vh;
 }
 
+.layoutCompact {
+  min-height: 100%;
+}
+
 .sider {
   background: var(--rentar-color-bg-surface);
   border-right: 1px solid var(--rentar-color-border-hairline);

@@ -50,7 +50,10 @@ export function NotificationBell({ notifications, onSelect, ...rest }: Notificat
                 }}
               >
                 <p className={styles.itemTitle}>{n.title}</p>
-                <p className={styles.itemDate}>{formatRelative(n.date)}</p>
+                {/* suppressHydrationWarning: ver el comentario en ActivityTimeline sobre formatRelative. */}
+                <p className={styles.itemDate} suppressHydrationWarning>
+                  {formatRelative(n.date)}
+                </p>
               </button>
             ))
           )}

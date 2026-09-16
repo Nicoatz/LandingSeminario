@@ -8,13 +8,20 @@ interface AuthLayoutProps {
   title: string
   subtitle?: string
   children: ReactNode
+  /**
+   * Si es `true`, usa `min-height: 100%` en vez de `100vh` — para
+   * previsualizarlo dentro de un contenedor acotado (ej. el catálogo de
+   * /design-system) sin que el alto de viewport rompa el recorte. `false`
+   * (el default) es lo correcto para una página de login real.
+   */
+  compact?: boolean
   'data-testid'?: string
 }
 
 /** Layout de login/registro: tarjeta centrada con el logo, título y el formulario. */
-export function AuthLayout({ title, subtitle, children, ...rest }: AuthLayoutProps) {
+export function AuthLayout({ title, subtitle, children, compact = false, ...rest }: AuthLayoutProps) {
   return (
-    <div className={styles.wrap} {...rest}>
+    <div className={`${styles.wrap} ${compact ? styles.wrapCompact : ''}`} {...rest}>
       <div className={styles.card}>
         <Image src={logo} alt="RentAR" className={styles.logo} priority />
         <div className={styles.titleGroup}>
