@@ -1,5 +1,5 @@
 .section {
-  background: linear-gradient(to bottom, #e3f2fb, #f7f9fb);
+  background: linear-gradient(to bottom, var(--rentar-color-sky-light), var(--rentar-color-bg-page));
 }
 
 .inner {
@@ -42,7 +42,7 @@
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.025em;
-  color: #12202e;
+  color: var(--rentar-color-text-primary);
 }
 
 @media (min-width: 640px) {
@@ -55,14 +55,14 @@
   margin-top: 1.25rem;
   max-width: 32rem;
   font-size: 1.125rem;
-  color: rgba(18, 32, 46, 0.7);
+  color: var(--rentar-color-text-secondary);
 }
 
 .pilot {
   margin-top: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #004d98;
+  color: var(--rentar-color-blue);
 }
 
 .ctaRow {
@@ -73,13 +73,13 @@
 }
 
 .ghostButton {
-  border-color: rgba(0, 77, 152, 0.2) !important;
-  color: #004d98 !important;
-  background: #ffffff !important;
+  border-color: rgba(var(--rentar-color-blue-rgb), 0.2) !important;
+  color: var(--rentar-color-blue) !important;
+  background: var(--rentar-color-bg-surface) !important;
 }
 
 .ghostButton:hover {
-  background: #e3f2fb !important;
+  background: var(--rentar-color-sky-light) !important;
 }
 
 .motif {

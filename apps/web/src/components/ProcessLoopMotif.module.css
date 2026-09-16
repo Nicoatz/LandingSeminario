@@ -1,9 +1,14 @@
 .container {
   position: relative;
   overflow: hidden;
-  border-radius: 1.5rem;
-  background: linear-gradient(to bottom right, #004d98, #003b74, #004d98);
-  box-shadow: 0 25px 50px -12px rgba(0, 77, 152, 0.2);
+  border-radius: var(--rentar-radius-xl);
+  background: linear-gradient(
+    to bottom right,
+    var(--rentar-color-blue),
+    var(--rentar-color-blue-dark),
+    var(--rentar-color-blue)
+  );
+  box-shadow: var(--rentar-shadow-deep);
 }
 
 .svg {
@@ -14,7 +19,7 @@
 
 .loopDot {
   animation: loop-travel 8s linear infinite;
-  filter: drop-shadow(0 0 4px rgba(215, 177, 93, 0.9));
+  filter: drop-shadow(0 0 4px rgba(var(--rentar-color-gold-rgb), 0.9));
 }
 
 .loopNode {

@@ -4,8 +4,8 @@ html {
 
 html,
 body {
-  background: #f7f9fb;
-  color: #12202e;
+  background: var(--rentar-color-bg-page);
+  color: var(--rentar-color-text-primary);
 }
 
 body {
@@ -19,13 +19,13 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid #004d98;
+  outline: 2px solid var(--rentar-color-blue);
   outline-offset: 2px;
 }
 
 ::selection {
-  background-color: #d7b15d;
-  color: #12202e;
+  background-color: var(--rentar-color-money);
+  color: var(--rentar-color-text-primary);
 }
 
 @media (prefers-reduced-motion: reduce) {

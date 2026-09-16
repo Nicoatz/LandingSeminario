@@ -18,7 +18,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.015em;
-  color: #12202e;
+  color: var(--rentar-color-text-primary);
 }
 
 @media (min-width: 640px) {

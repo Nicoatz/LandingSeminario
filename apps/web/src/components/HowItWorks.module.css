@@ -1,6 +1,6 @@
 .section {
   scroll-margin-top: 4rem;
-  background: rgba(227, 242, 251, 0.4);
+  background: rgba(var(--rentar-color-sky-rgb), 0.4);
   padding: 4rem 0;
 }
 
@@ -28,7 +28,7 @@
   font-size: 1.875rem;
   font-weight: 700;
   letter-spacing: -0.015em;
-  color: #12202e;
+  color: var(--rentar-color-text-primary);
 }
 
 @media (min-width: 640px) {
@@ -61,7 +61,7 @@
   display: none;
   height: 100%;
   width: 1px;
-  background: rgba(0, 77, 152, 0.15);
+  background: rgba(var(--rentar-color-blue-rgb), 0.15);
 }
 
 @media (min-width: 640px) {
@@ -103,18 +103,18 @@
 
 .node {
   position: relative;
-  z-index: 10;
+  z-index: var(--rentar-z-decorative);
   display: grid;
   height: 2.75rem;
   width: 2.75rem;
   flex-shrink: 0;
   place-items: center;
-  border-radius: 999px;
-  background: #004d98;
+  border-radius: var(--rentar-radius-pill);
+  background: var(--rentar-color-blue);
   font-size: 1rem;
   font-weight: 700;
-  color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(227, 242, 251, 0.4);
+  color: var(--rentar-color-bg-surface);
+  box-shadow: 0 0 0 4px rgba(var(--rentar-color-sky-rgb), 0.4);
 }
 
 @media (min-width: 640px) {
@@ -134,12 +134,12 @@
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #12202e;
+  color: var(--rentar-color-text-primary);
 }
 
 .stepDesc {
   margin: 0.25rem 0 0;
   max-width: 26ch;
   font-size: 0.875rem;
-  color: rgba(18, 32, 46, 0.7);
+  color: var(--rentar-color-text-secondary);
 }

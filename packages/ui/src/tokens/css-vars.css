@@ -42,6 +42,19 @@
   --rentar-color-sky: #a0d1ef;
   --rentar-color-sky-light: #e3f2fb;
 
+  /*
+   * Tripletas RGB (sin rgb()/rgba() alrededor) para componer opacidades
+   * puntuales que no forman parte de la escala semántica de texto/borde
+   * (ej. `rgba(var(--rentar-color-ink-rgb), 0.055)`). El color en sí queda
+   * tokenizado; el número de opacidad es un valor de diseño legítimo, no
+   * un color hardcodeado.
+   */
+  --rentar-color-ink-rgb: 18, 32, 46;
+  --rentar-color-blue-rgb: 0, 77, 152;
+  --rentar-color-gold-rgb: 215, 177, 93;
+  --rentar-color-sky-rgb: 227, 242, 251;
+  --rentar-color-paper-rgb: 247, 249, 251;
+
   /* Radios */
   --rentar-radius-pill: 9999px;
   --rentar-radius-sm: 8px;

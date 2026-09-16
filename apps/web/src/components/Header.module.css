@@ -1,9 +1,9 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 50;
-  border-bottom: 1px solid rgba(18, 32, 46, 0.05);
-  background: rgba(247, 249, 251, 0.9);
+  z-index: var(--rentar-z-sticky);
+  border-bottom: 1px solid rgba(var(--rentar-color-ink-rgb), 0.05);
+  background: rgba(var(--rentar-color-paper-rgb), 0.9);
   backdrop-filter: blur(8px);
 }
 
@@ -37,7 +37,7 @@
   gap: 2rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: rgba(18, 32, 46, 0.8);
+  color: rgba(var(--rentar-color-ink-rgb), 0.8);
 }
 
 .nav a {
@@ -46,7 +46,7 @@
 }
 
 .nav a:hover {
-  color: #004d98;
+  color: var(--rentar-color-blue);
 }
 
 .desktopActions {
@@ -62,7 +62,7 @@
   place-items: center;
   border: none;
   background: none;
-  color: #12202e;
+  color: var(--rentar-color-text-primary);
   cursor: pointer;
 }
 
@@ -87,13 +87,13 @@
 .drawerNav a {
   border-radius: 0.5rem;
   padding: 0.5rem;
-  color: rgba(18, 32, 46, 0.8);
+  color: rgba(var(--rentar-color-ink-rgb), 0.8);
   text-decoration: none;
   font-weight: 500;
 }
 
 .drawerNav a:hover {
-  background: #e3f2fb;
+  background: var(--rentar-color-sky-light);
 }
 
 .drawerActions {
@@ -101,6 +101,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  border-top: 1px solid rgba(18, 32, 46, 0.05);
+  border-top: 1px solid rgba(var(--rentar-color-ink-rgb), 0.05);
   padding-top: 0.75rem;
 }
