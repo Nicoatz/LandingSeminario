@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import logo from '@/assets/logo-rentar.svg'
+import logo from '../assets/logo-rentar.svg'
 import styles from './Footer.module.css'
 
-/** Pie de página de la landing: logo, tagline, links de ancla y nota legal. */
-export default function Footer() {
+/** Pie de página de RentAR: logo, tagline, links de ancla y nota legal. Lo usan la landing y `PublicLayout`. */
+export function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>

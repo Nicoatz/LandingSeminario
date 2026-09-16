@@ -5,15 +5,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button, Drawer } from 'antd'
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons'
-import logo from '@/assets/logo-rentar.svg'
+import { seed } from '../tokens/primitives'
+import logo from '../assets/logo-rentar.svg'
 import styles from './Header.module.css'
 
 /**
- * Encabezado fijo de la landing: logo, navegación de anclas, CTAs de sesión
- * (placeholders sin destino todavía, ver PRODUCT.md) y menú hamburguesa en
- * mobile (`Drawer` de antd).
+ * Encabezado fijo de RentAR: logo, navegación de anclas, CTAs de sesión
+ * (placeholders sin destino todavía, ver docs/PRODUCT.md) y menú hamburguesa
+ * en mobile (`Drawer` de antd). Lo usan tanto la landing como `PublicLayout`.
  */
-export default function Header() {
+export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -33,7 +34,7 @@ export default function Header() {
         </nav>
 
         <div className={styles.desktopActions}>
-          <Button type="text" style={{ color: '#004D98', fontWeight: 600 }} data-testid="header-login-button">
+          <Button type="text" style={{ color: seed.blue, fontWeight: 600 }} data-testid="header-login-button">
             Iniciar sesión
           </Button>
           <Button type="primary" data-testid="header-publish-button">
@@ -74,7 +75,7 @@ export default function Header() {
             Sistema de diseño
           </Link>
           <div className={styles.drawerActions}>
-            <Button type="text" style={{ color: '#004D98', fontWeight: 600, textAlign: 'left' }} block>
+            <Button type="text" style={{ color: seed.blue, fontWeight: 600, textAlign: 'left' }} block>
               Iniciar sesión
             </Button>
             <Button type="primary" block>
