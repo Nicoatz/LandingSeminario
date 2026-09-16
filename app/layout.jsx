@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
           <ConfigProvider theme={antdTheme}>{children}</ConfigProvider>
         </AntdRegistry>
       {/* impeccable-live-start */}
-<script src="http://localhost:8400/live.js?token=ff1a1f09-56e1-42ee-92b4-8792e5d0840e"></script>
+<script src="http://localhost:8400/live.js?token=7010de95-20df-4eef-b45c-b5f80c1d2311"></script>
 {/* impeccable-live-end */}
 </body>
     </html>
