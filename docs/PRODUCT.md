@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Next.js (App Router) + React + JavaScript + Ant Design 6 (`ConfigProvider` theme tokens, see `lib/theme.js`). This is a stack migration of the original Vite + Tailwind prototype (still kept side-by-side in `../landing/`) onto Next.js/Ant Design — same scope, same content, same visual design, different implementation. Client-side filtering (no backend) is unchanged from the original.
+Next.js (App Router) + React + TypeScript + Ant Design 6 (`ConfigProvider` theme tokens, see `packages/ui/src/theme.ts`), organized as an npm workspaces monorepo (`apps/web`, `packages/ui`, `packages/shared-types` — see the root `CLAUDE.md`). This is a stack migration of the original Vite + Tailwind prototype (still kept side-by-side in `../landing/`) onto Next.js/Ant Design — same scope, same content, same visual design, different implementation. Client-side filtering (no backend) is unchanged from the original.
 
 ## Users
 
@@ -34,7 +34,7 @@ Pilot market: Córdoba Capital, Argentina, with a strong seasonal student-driven
 
 ## Capabilities and Constraints
 
-- This build is a **front-end-only prototype**: the search bar and property grid filter a local mock dataset (`lib/data/properties.mock.ts`) client-side; there is no Supabase connection and no real authentication, payments, or e-signature flow.
+- This build is a **front-end-only prototype**: the search bar and property grid filter a local mock dataset (`apps/web/src/lib/data/properties.mock.ts`) client-side; there is no Supabase connection and no real authentication, payments, or e-signature flow.
 - Header "Iniciar sesión" / "Publicar propiedad" buttons and the property grid's "Buscar más propiedades" button are intentional visual placeholders with no destination yet — the full search/listing experience and auth are explicitly meant to live on separate, not-yet-built pages; the landing only previews up to 8 filtered results.
 - Real product (out of scope here, per the source study): Supabase (persistence/auth), Vercel (hosting), MercadoPago (payments), Gemini (contract-analysis assistant), a to-be-defined e-signature mechanism.
 - Only long-term unfurnished residential rentals are in scope; temporary/tourist rentals, furnished seasonal rentals, and corporate portfolios are explicitly out of scope.
@@ -42,7 +42,7 @@ Pilot market: Córdoba Capital, Argentina, with a strong seasonal student-driven
 
 ## Brand Commitments
 
-- Name: **RentAR**. Logo: `assets/logo-rentar.svg` (primary, house isotype + wordmark) used in header/footer; `assets/logo-rentar-compact.svg` used as the favicon (`app/icon.svg`).
+- Name: **RentAR**. Logo: `apps/web/src/assets/logo-rentar.svg` (primary, house isotype + wordmark) used in header/footer; `apps/web/src/assets/logo-rentar-compact.svg` used as the favicon (`apps/web/src/app/icon.svg`).
 - Palette (fixed, from the project's brand sheet): blue `#004D98` (primary), gold `#D7B15D` (accent), sky blue `#A0D1EF` (secondary).
 - Typeface: **League Spartan** (loaded via Google Fonts) for all UI text.
 - Voice: Rioplatense Spanish, clear, warm, trustworthy — not corporate/stiff. Copy already written throughout the shipped components.
