@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Button } from 'antd'
 import type { FilterState } from '@rentar/shared-types'
-import { Footer, Header } from '@rentar/ui'
+import { PublicLayout } from '@rentar/ui'
 import Hero from './Hero'
 import HowItWorks from './HowItWorks'
 import PropertyGrid from './PropertyGrid'
@@ -43,8 +43,9 @@ function matchesFilters(property: MockProperty, filters: FilterState): boolean {
 
 /**
  * Página completa de la landing: arma el estado de filtros (client-side,
- * sin backend) y orquesta Header, Hero (con el buscador), el grid de
- * propiedades filtradas (recortado a `PREVIEW_LIMIT`) y HowItWorks.
+ * sin backend) y orquesta, dentro de `PublicLayout` (Header + Footer),
+ * Hero (con el buscador), el grid de propiedades filtradas (recortado a
+ * `PREVIEW_LIMIT`) y HowItWorks.
  */
 export default function Landing() {
   const [filters, setFilters] = useState<FilterState>(defaultFilters)
@@ -55,24 +56,20 @@ export default function Landing() {
   )
 
   return (
-    <>
-      <Header />
-      <main>
-        <Hero filters={filters} onChange={setFilters} resultCount={filteredProperties.length} />
+    <PublicLayout>
+      <Hero filters={filters} onChange={setFilters} resultCount={filteredProperties.length} />
 
-        <section className={styles.section}>
-          <h2 className={styles.heading}>Propiedades disponibles cerca tuyo en Córdoba</h2>
-          <PropertyGrid properties={filteredProperties.slice(0, PREVIEW_LIMIT)} />
-          <div className={styles.moreWrap}>
-            <Button type="primary" size="large" data-testid="landing-more-properties-button">
-              Buscar más propiedades
-            </Button>
-          </div>
-        </section>
+      <section className={styles.section}>
+        <h2 className={styles.heading}>Propiedades disponibles cerca tuyo en Córdoba</h2>
+        <PropertyGrid properties={filteredProperties.slice(0, PREVIEW_LIMIT)} />
+        <div className={styles.moreWrap}>
+          <Button type="primary" size="large" data-testid="landing-more-properties-button">
+            Buscar más propiedades
+          </Button>
+        </div>
+      </section>
 
-        <HowItWorks />
-      </main>
-      <Footer />
-    </>
+      <HowItWorks />
+    </PublicLayout>
   )
 }
