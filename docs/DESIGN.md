@@ -1,6 +1,7 @@
 ---
 name: RentAR
-description: Landing page for RentAR — direct, agency-free long-term rentals in Córdoba, Argentina
+description: Design system de RentAR — tokens, componentes y reglas de uso, implementados en @rentar/ui
+package: "@rentar/ui"
 colors:
   brand-blue: "#004D98"
   brand-blue-dark: "#003B74"
@@ -10,6 +11,13 @@ colors:
   brand-sky-light: "#E3F2FB"
   ink: "#12202E"
   paper: "#F7F9FB"
+semantic:
+  success: "#166534"
+  warning: "#92400E"
+  error: "#9F1239"
+  info: "#004D98"
+  neutral: "rgba(18, 32, 46, 0.5)"
+  money: "#D7B15D"
 typography:
   display:
     fontFamily: "League Spartan, system-ui, sans-serif"
@@ -38,161 +46,380 @@ typography:
     fontSize: "0.875rem"
     fontWeight: 600
     lineHeight: 1.4
-rounded:
+radii:
   pill: "9999px"
-  md: "1rem"
-  lg: "1.5rem"
+  sm: "8px"
+  md: "12px"
+  lg: "16px"
+  xl: "24px"
 spacing:
   xs: "0.5rem"
   sm: "1rem"
   md: "1.5rem"
   lg: "2.5rem"
   xl: "4rem"
-components:
-  button-primary:
-    backgroundColor: "{colors.brand-blue}"
-    textColor: "#FFFFFF"
-    rounded: "{rounded.pill}"
-    padding: "12px 24px"
-  button-primary-hover:
-    backgroundColor: "{colors.brand-blue-dark}"
-  button-secondary:
-    backgroundColor: "#FFFFFF"
-    textColor: "{colors.brand-blue}"
-    rounded: "{rounded.pill}"
-    padding: "12px 24px"
-  card-property:
-    backgroundColor: "#FFFFFF"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "16px"
 ---
 
 # Design System: RentAR
+
+Implementado en código en `packages/ui` (paquete `@rentar/ui`), consumido por `apps/web`.
+Catálogo vivo, interactivo, con toggle de tema claro/oscuro: `/design-system`. Este documento es
+la referencia en prosa de las mismas decisiones — si algo acá y el código en vivo no coinciden, el
+código manda y este documento está desactualizado.
 
 ## Overview
 
 **Creative North Star: "El trato directo"**
 
-RentAR's whole visual language exists to make one thing feel true on sight: you are dealing with a real owner, not an agency counter. Every surface stays close, warm, and legible rather than corporate or glossy — a deep institutional blue gives the trust of paperwork done right, a warm gold marks the moment money changes hands, and a soft sky blue keeps the page light instead of bureaucratic. Nothing in the system tries to look like a big real-estate portal; it looks like a well-run, honest desk.
+Todo el lenguaje visual de RentAR existe para que una cosa se sienta cierta a simple vista: estás
+tratando con un dueño real, no con el mostrador de una inmobiliaria. Cada superficie se mantiene
+cercana, cálida y legible en vez de corporativa o brillosa — un azul institucional profundo da la
+confianza de un trámite bien hecho, un dorado cálido marca el momento en que se mueve la plata, y
+un celeste suave mantiene la página liviana en vez de burocrática. Nada en el sistema busca
+parecerse a un portal inmobiliario grande; parece un escritorio honesto, bien llevado.
 
-The system is quiet by default and spends its one loud gesture on the process itself: the hero's circular motion diagram (search → contact → sign → pay) is the single animated centerpiece, everything else moves only enough to acknowledge the user's scroll or hover. Cards are plain and information-dense rather than decorated; the only recurring embellishment is the pill shape, used consistently for anything actionable.
+El sistema es callado por default y gasta su único gesto ruidoso en el proceso mismo: el diagrama
+circular animado del hero (buscar → contactar → firmar → pagar) es la única pieza animada central,
+todo lo demás se mueve solo lo justo para reconocer el scroll o el hover del usuario. Las tarjetas
+son planas y densas en información en vez de decoradas; el único adorno recurrente es la forma
+pill, usada consistentemente para cualquier cosa accionable.
 
-Confirmed rejection: no kicker/eyebrow labels above headings anywhere in the system — headings carry their own weight. No card-of-icon+heading+text as a page-structure default (the "Cómo funciona" section deliberately uses a connected numbered timeline instead).
+Rechazo confirmado: ningún label tipo "kicker" en mayúsculas arriba de un heading en todo el
+sistema — los headings cargan su propio peso. Ningún patrón de tarjeta ícono+heading+texto como
+default de estructura de página (la sección "Cómo funciona" deliberadamente usa un timeline
+numerado conectado en su lugar).
 
 **Key Characteristics:**
-- Deep institutional blue as the only "loud" hue for interactive elements; gold reserved specifically for money/value.
-- Large, soft rounding (pill buttons, `rounded-2xl`/`rounded-3xl` containers) — never sharp corners.
-- Quiet, soft-lifted white cards on a barely-off-white page, not a bright-white/gray-900 pairing.
-- One authored motion moment per view (hero loop; scroll-reveal timeline), never scattered decoration.
-- League Spartan throughout — no secondary typeface, ever.
+- Azul institucional profundo como único hue "fuerte" para lo interactivo; dorado reservado
+  específicamente para dinero/valor.
+- Redondeo grande y consistente (botones pill, contenedores `radii.lg`/`radii.xl`) — nunca
+  esquinas rectas.
+- Tarjetas blancas suavemente elevadas sobre una página apenas fuera de blanco.
+- Un momento de movimiento autoral por vista (loop del hero; timeline con scroll-reveal), nunca
+  decoración dispersa.
+- League Spartan en todo el sistema — ninguna tipografía secundaria, nunca.
+- **Todo tokenizado.** Ningún componente nuevo hardcodea un color, radio, sombra o tamaño de
+  espaciado — todo sale de `@rentar/ui` (`packages/ui/src/tokens/`). Ver "Cómo se implementan los
+  tokens" más abajo.
 
-## Colors
+## Cómo se implementan los tokens
 
-The palette is small and function-coded: blue carries every clickable/primary action, gold appears only where money or value is being communicated, sky blue is atmosphere (backgrounds, dividers, hover fills), never text.
+Dos capas, cada una con un trabajo distinto:
 
-### Primary
-- **Azul Escribanía** (`#004D98`): the only color used for primary buttons, links, active filter states, focus rings, icon strokes inside white node circles, and the numbered nodes in the "Cómo funciona" timeline. If it's clickable and important, it's this blue.
-- **Azul Escribanía Oscuro** (`#003B74`): the hover/active state of the above. Never used at rest.
+1. **`packages/ui/src/tokens/*.ts`** — la fuente de verdad en TypeScript. `primitives.ts` tiene los
+   colores semilla y las escalas de 10 pasos generadas con el algoritmo oficial de antd
+   (`@ant-design/colors`, no elegidas a mano), tipografía, radios, espaciado, sombras con nombre y
+   z-index. `semantic.ts` tiene los colores con significado (`light`/`dark`). `status-meta.ts` tiene
+   el mapa completo de estado→label/color/ícono. Se consumen como constantes de TS en cualquier
+   `.tsx` (`import { seed, radii } from '@rentar/ui'`) — es la forma correcta de tokenizar colores
+   usados en lógica de componente (el `color` de un `<Tag>`, por ejemplo).
+2. **`packages/ui/src/tokens/css-vars.css`** — variables `--rentar-*` en `:root`, consumidas por
+   los `.module.css` de cualquier componente (tanto los de la landing como los nuevos). **No** son
+   las mismas que `var(--ant-*)`: el modo `cssVar` de antd (activado en `theme.ts`) declara esas
+   variables por instancia de componente de antd, no en `:root`, así que solo están disponibles
+   dentro del árbol DOM de un `<Button>`/`<Card>`/etc. — no sirven para CSS propio de un `<header>`
+   o una `<section>`. `--rentar-*` sí vive en `:root` y por eso es la forma confiable de tokenizar
+   CSS de layout en cualquier parte del árbol.
 
-### Secondary
-- **Dorado Trámite** (`#D7B15D` / ink variant `#8C6B1D`): reserved for money — the property price on each card, and the text-selection highlight. The raw `#D7B15D` is also the accent stroke on the hero's guide circle and the traveling node dot. `#8C6B1D` is the only text-safe gold (≥4.5:1 on white/paper); `#D7B15D` itself must never carry small text — see the Contrast Rule below.
-- **Celeste Cordobés** (`#A0D1EF`, tint `#E3F2FB`): atmosphere only — the hero/how-it-works section backgrounds, the search bar's gradient lead-in, hover fills on secondary buttons and chips, the node ring glow. Never used for text or icons.
+Opacidades puntuales que no encajan en un token semántico (`rgba(18,32,46,0.055)`, por ejemplo) se
+expresan como `rgba(var(--rentar-color-ink-rgb), 0.055)` — el color queda tokenizado, el número de
+opacidad es un valor de diseño legítimo, no un color hardcodeado.
 
-### Neutral
-- **Ink** (`#12202E`): all body copy at full or `/70` opacity (never lower — see the Contrast Rule). Doubles as the near-black used at low opacity for hairline borders (`border-black/5`, `ring-black/5`).
-- **Paper** (`#F7F9FB`): the page background. Cards sit on it in solid white to read as one step "up."
+## Colores
+
+La paleta es chica y está codificada por función: el azul lleva toda acción clicable/primaria, el
+dorado aparece solo donde se comunica dinero o valor, el celeste es atmósfera (fondos, dividers,
+hover), nunca texto.
+
+### Primitivos (marca)
+- **Azul Escribanía** (`seed.blue` / `--rentar-color-blue`, `#004D98`): el único color usado para
+  botones primarios, links, estados activos de filtros, foco, trazos de ícono dentro de nodos
+  blancos y los nodos numerados del timeline de "Cómo funciona". Si es clicable e importante, es
+  este azul.
+- **Azul Escribanía Oscuro** (`seed.blueDark`, `#003B74`): hover/activo del azul de arriba. Nunca
+  en reposo.
+- **Dorado Trámite** (`seed.gold` / `#D7B15D`, tinta de texto `seed.goldInk` / `#8C6B1D`):
+  reservado para dinero — la línea de precio de cada tarjeta, `MoneyAmount`, el highlight de
+  selección de texto. El `#D7B15D` crudo también es el trazo del círculo guía del hero y el punto
+  que viaja por el loop. `#8C6B1D` es el único dorado apto para texto (≥4.5:1 sobre blanco/paper);
+  `#D7B15D` nunca lleva texto chico — ver la Regla de Contraste.
+- **Celeste Cordobés** (`seed.sky` / `#A0D1EF`, tinte `seed.skyLight` / `#E3F2FB`): atmósfera
+  solamente — fondos de sección (hero, "Cómo funciona"), degradé del buscador, hover de botones
+  secundarios y chips, fondo alterno de tarjetas. Nunca para texto ni íconos.
+- **Ink** (`seed.ink` / `#12202E`): todo el texto de cuerpo, siempre a 70% de opacidad o más (ver
+  Regla de Contraste). También el casi-negro usado a baja opacidad para hairlines.
+- **Paper** (`seed.paper` / `#F7F9FB`): fondo de página. Las tarjetas se apoyan encima en blanco
+  sólido para leerse un escalón "arriba".
+
+### Escalas generadas
+`colorScales.{blue,gold,sky}` — 10 pasos por color (`50` el más claro, `900` el más oscuro),
+generados con `@ant-design/colors` a partir de los mismos hex de marca. Se usan para variantes de
+hover/fondo de componentes nuevos que necesiten un tinte intermedio — **nunca** para el texto
+principal o las superficies ya definidas arriba, que siguen usando los hex de marca literales sin
+pasar por el algoritmo (para no introducir una diferencia imperceptible pero real frente a lo ya
+validado).
+
+`darkColorScales` existe para el mismo propósito en modo oscuro — con una salvedad: en la escala
+que devuelve `generate(color, { theme: 'dark' })`, el índice va de oscuro (paso `50`) a claro (paso
+`900`), al revés que en la escala clara. Es el propio algoritmo de antd optimizando para fondos
+oscuros con acentos claros, no un error — pero hay que tenerlo presente al usarla.
+
+### Semánticos (`light` / `dark`)
+Cinco roles con significado, consumidos por `StatusTag` (vía `getStatusMeta`) y por cualquier
+componente que necesite comunicar estado — nunca elegidos "a ojo" por pantalla.
+
+| Rol | Claro | Oscuro | Uso |
+| --- | --- | --- | --- |
+| `success` | `#166534` | `#4ADE80` | publicada, vigente, firmado, pagado, resuelto, activa |
+| `warning` | `#92400E` | `#FBBF24` | pausada, pendiente_firma, pendiente, en_proceso |
+| `error` | `#9F1239` | `#FB7185` | rescindido, rechazado, vencido, abierto, vencida |
+| `info` | `#004D98` (reusa el azul de marca) | `#1B65A6` | alquilada, finalizado |
+| `neutral` | `ink/50` | `paper/50` | borrador, anulado, cerrado, cancelada |
+| `money` | `#D7B15D` / `#8C6B1D` | igual — no cambia en dark | `MoneyAmount` con `emphasis`, nunca un estado |
 
 ### Named Rules
-**The Money-Is-Gold Rule.** Gold appears exactly where currency does (the price line) and nowhere else as a content color; everywhere else it is atmosphere (backgrounds, guide lines, selection). Do not use gold for a second, unrelated emphasis just because it is "the accent."
+**La regla del dinero-es-dorado.** El dorado aparece exactamente donde hay moneda (la línea de
+precio, `MoneyAmount`) y en ningún otro lugar como color de contenido — nunca en un `StatusTag`,
+por más que un estado sea "positivo" (ver el color `info` para "alquilada"/"finalizado", que
+podrían tentar a usar dorado y no lo hacen).
 
-**The Contrast Rule.** No text on a light surface goes below `ink/70` (≈6.1:1 on white/paper) or below `brand-gold-ink` for gold text (≈4.96:1). `ink/60`, `ink/50`, and raw `brand-gold` (`#D7B15D`) are correct for large decorative fills but must never carry small text.
+**La regla de contraste.** Ningún texto sobre superficie clara baja de `ink/70` (≈6.1:1 sobre
+blanco/paper) o de `goldInk` para texto dorado (≈4.96:1). `ink/60`, `ink/50` y el dorado crudo son
+correctos para rellenos decorativos grandes, pero nunca para texto chico.
 
-## Typography
+## Tipografía
 
-**Display/Body Font:** League Spartan, with `system-ui, sans-serif` as fallback — one family for the entire system, at different weights and sizes only.
+**Fuente de Display/Cuerpo:** League Spartan, con `system-ui, sans-serif` como respaldo — una sola
+familia para todo el sistema, en distintos pesos y tamaños únicamente.
 
-**Character:** A single confident geometric sans doing all the work: bold and tight-tracked at display size for headlines, regular weight for body copy. No serif, no mono, no second display face — the "one voice" is deliberate.
+**Carácter:** un sans geométrico y confiado haciendo todo el trabajo: bold y de tracking ajustado
+en tamaño display para headlines, peso regular para texto de cuerpo. Sin serif, sin mono, sin una
+segunda tipeface de display — la "voz única" es deliberada.
 
-### Hierarchy
-- **Display** (700, `text-4xl`→`text-5xl` / 2.25rem→3rem, line-height 1.05, `tracking-tight`): the H1 hero headline only.
-- **Headline** (700, `text-2xl`→`text-4xl`, tight tracking): section H2s ("Propiedades disponibles…", "De la búsqueda a las llaves…").
-- **Title** (600, `text-lg`/1.125rem): property card titles, timeline step titles (H3s).
-- **Body** (400, 1rem/1.5): paragraph copy; kept short (2–3 lines) rather than run long — this is a landing, not an article, so the 65–75ch measure guidance does not apply to its short blurbs.
-- **Label** (600, `text-sm`/0.875rem): nav links, form labels, button text, metadata rows on cards (dormitorios · m² · índice).
+### Jerarquía
+- **Display** (700, `clamp(2.25rem, 4vw, 3rem)`, line-height 1.05, tracking -0.025em): el H1 del
+  hero únicamente.
+- **Headline** (700, `clamp(1.5rem, 3vw, 2.25rem)`, tracking ajustado): H2 de sección.
+- **Title** (600, `1.125rem`): títulos de tarjeta, H3 de pasos del timeline.
+- **Body** (400, `1rem`/1.5): texto de párrafo; se mantiene corto (2–3 líneas) en vez de largo —
+  esto es una landing/panel, no un artículo.
+- **Label** (600, `0.875rem`): links de nav, labels de formulario, texto de botón, filas de
+  metadata de tarjeta (dormitorios · m² · índice).
 
 ### Named Rules
-**The No-Eyebrow Rule.** No small uppercase/tracked label ever sits directly above a heading as a kicker. If a heading needs a category or context marker, it goes *below* the heading (see PropertyCard's neighborhood/type line) or is folded into the heading's own words.
+**La regla de no-eyebrow.** Ningún label chico en mayúsculas/tracking se sienta directamente
+arriba de un heading como kicker. Si un heading necesita una categoría o marcador de contexto, va
+*debajo* del heading (ver la línea de barrio/tipología de `PropertyCard`) o se pliega dentro de las
+palabras del heading mismo.
 
 ## Layout
 
-Single-column page, `max-w-6xl` centered container, `px-4`/`sm:px-6` side gutters. Section rhythm is generous and consistent: `py-14`/`sm:py-16` for standard sections, `py-16`/`sm:py-20` for the "Cómo funciona" band.
+Página de una sola columna, contenedor centrado `max-w-6xl`, gutters laterales de `spacing.sm`
+(mobile) a `spacing.md` (`sm:`). El ritmo de sección es generoso y consistente: `spacing.lg` para
+secciones estándar, un poco más para la banda de "Cómo funciona".
 
-Responsive strategy is mobile-first with three effective tiers: mobile (default, single column), `sm:` (640px, 2-column grids, header desktop nav still hidden), `lg:`/`xl:` (1024px/1280px, full desktop nav, 3–4 column property grid, hero becomes two-column). The header's nav/CTAs collapse into a hamburger below `md:`.
+Estrategia responsive mobile-first con tres breakpoints efectivos: mobile (default, una columna),
+`sm:` (640px, grids de 2 columnas, nav desktop del header todavía oculto), `lg:`/`xl:`
+(1024px/1280px, nav desktop completo, grid de propiedades de 3–4 columnas, hero se vuelve de dos
+columnas). El nav/CTAs del header colapsan a un hamburguesa por debajo de `md:`.
 
-The hero's search bar is intentionally pulled up over the hero's bottom edge with a negative margin (`-mt-16`/`lg:-mt-24`), so it reads as one continuous unit with the hero rather than a separate block starting the next section — the only place in the layout that overlaps sections this way.
+El buscador del hero se sube intencionalmente sobre el borde inferior del hero con un margen
+negativo, así se lee como una sola pieza con el hero en vez de un bloque separado empezando la
+sección siguiente — el único lugar del layout que superpone secciones así.
 
-## Elevation & Depth
+## Elevación y profundidad
 
-Suavemente elevado — "softly lifted." Depth is used sparingly and only to separate a card from the page, never to draw attention to itself: white cards get a soft, small shadow at rest (`shadow-sm`) with a slightly stronger one plus a 1px lift on hover (`hover:-translate-y-1 hover:shadow-lg`), always paired with a hairline `ring-black/5` rather than a hard border. Buttons carry a soft colored shadow tinted to their own color (`shadow-brand-blue/20`) rather than a generic gray shadow.
+Suavemente elevado. La profundidad se usa con moderación y solo para separar una tarjeta de la
+página, nunca para llamar la atención sobre sí misma: las tarjetas blancas llevan una sombra chica
+y suave en reposo (`shadows.resting`) con una un poco más fuerte más un levantamiento de 1px en
+hover (`shadows.lifted`), siempre emparejada con un hairline `ink/5` en vez de un borde duro. Los
+botones llevan una sombra de color propio (`shadows.button`, teñida de azul) en vez de una sombra
+gris genérica.
 
-### Shadow Vocabulary
-- **Resting card** (`shadow-sm` + `ring-1 ring-black/5`): PropertyCard and the SearchBar panel at rest.
-- **Hover-lifted card** (`shadow-lg` + `-translate-y-1`): PropertyCard on hover — the only interactive elevation change in the system.
-- **Colored button shadow** (`shadow-lg shadow-brand-blue/20`): primary CTAs (hero buttons, "Buscar más propiedades").
-- **Deep container shadow** (`shadow-2xl shadow-brand-blue/20`): the hero's ProcessLoopMotif container, the one place elevation is used for visual weight rather than separation.
+### Vocabulario de sombras (`shadows.*`, `--rentar-shadow-*`)
+- **`resting`**: `PropertyCard` y el panel de `SearchBar`/tarjetas del catálogo en reposo.
+- **`lifted`**: `PropertyCard` en hover — el único cambio de elevación interactivo del sistema.
+- **`button`**: CTAs primarios (botones del hero, "Buscar más propiedades").
+- **`deep`**: el contenedor `ProcessLoopMotif` del hero — el único lugar donde la elevación se usa
+  por peso visual en vez de separación.
+- **`form`**: el panel de `SearchBar` — existía hardcodeada y sin nombre antes de tokenizarse.
 
 ### Named Rules
-**The Earned-Shadow Rule.** A shadow only appears on something the user can act on (a card, a button) or the single hero showpiece. Static content blocks (headings, paragraphs, the footer) stay flat.
+**La regla de sombra-ganada.** Una sombra solo aparece sobre algo que el usuario puede accionar
+(una tarjeta, un botón) o la pieza insignia del hero. Los bloques de contenido estático (headings,
+párrafos, el footer) quedan planos.
 
-## Shapes
+## Formas
 
-Rounding is large and consistent, never sharp: `rounded-full` (pill) for every button, badge, and filter chip; `rounded-2xl` (1rem) for cards and the search panel; `rounded-3xl` (1.5rem) for the hero's motif container, the single largest surface in the system. Borders are hairlines only (`border-black/10` on inputs, `ring-black/5` on cards) — never a heavy or colored border, and never a colored `border-left`/`border-right` accent stripe.
+El redondeo es grande y consistente, nunca filoso: `radii.pill` para todo botón, badge y chip;
+`radii.lg` (16px) para tarjetas y el panel del buscador; `radii.xl` (24px) para el contenedor del
+motivo del hero, la superficie más grande del sistema. Los bordes son hairlines únicamente
+(`ink/10` en inputs, `ink/5` en tarjetas) — nunca un borde grueso o de color, y nunca un acento de
+borde-izquierdo/derecho de color.
 
-## Components
+## Modo oscuro
 
-### Buttons
-- **Shape:** `rounded-full` (pill), always — no square or slightly-rounded buttons anywhere.
-- **Primary:** `bg-brand-blue` / white text / `px-6 py-3` (hero/section CTAs) or `px-4 py-2` (header-scale); `shadow-lg shadow-brand-blue/20`.
-- **Hover/Focus:** primary hover darkens to `brand-blue-dark`; all focus states use the global 2px `brand-blue` outline with 2px offset (never a color/glow substitute).
-- **Secondary/Ghost:** white background, `brand-blue` text, `ring-1 ring-brand-blue/20`, hover fills with `brand-sky-light`. Used for lower-emphasis actions ("Ver cómo funciona", header "Iniciar sesión").
-- **Placeholder state:** header "Iniciar sesión"/"Publicar propiedad" and the grid's "Buscar más propiedades" render as real primary/secondary buttons with no destination yet (per PRODUCT.md, the full auth/search surfaces don't exist yet) — they must never look disabled or broken, just genuinely styled buttons that currently do nothing.
+Implementado (`antdThemeDark` en `theme.ts` + overrides `[data-rentar-theme="dark"]` en
+`css-vars.css`), pero **acotado a `/design-system` y a los paneles autenticados futuros
+(`AppShell`)**. La landing pública nunca activa este tema — su `ConfigProvider` usa siempre
+`antdTheme` (claro), a propósito, para que la landing quede pixel-igual sin importar qué se toque
+en el sistema de tokens.
 
-### Chips (SearchBar characteristics)
-- **Style:** pill, `border` default (`border-black/10 bg-paper text-ink/80`); selected state inverts to solid `bg-brand-blue text-white`.
-- **State:** toggle (multi-select), `aria-pressed` reflects state — no separate "filter chip vs action chip" visual language, one chip style throughout.
+El toggle de `/design-system` envuelve toda la página en un `<ConfigProvider theme={isDark ?
+antdThemeDark : antdTheme}>` anidado y setea `data-rentar-theme="dark"` en el elemento raíz de la
+página — ambos cambian juntos, así los componentes de antd (vía `cssVar`) y el CSS propio (vía
+`--rentar-*`) quedan sincronizados.
 
-### Cards / Containers
-- **Corner Style:** `rounded-2xl` (PropertyCard, SearchBar panel).
-- **Background:** solid white on the `paper` page background.
-- **Shadow Strategy:** see Elevation & Depth — resting `shadow-sm`, hover-lifted on PropertyCard only.
-- **Border:** `ring-1 ring-black/5` hairline, no visible border color.
-- **Internal Padding:** `p-4` (PropertyCard body), `p-4`→`sm:p-6` (SearchBar panel).
+## Estados de dominio
 
-### Inputs / Fields
-- **Style:** `bg-paper` (not white — a subtle inset feel inside the white SearchBar card), `border border-black/10`, `rounded-lg`.
-- **Focus:** border shifts to `brand-blue`, no glow/shadow added.
-- **Range slider:** native input styled via `accent-brand-blue`; the current value is always echoed in the label text itself (never hidden behind the thumb position alone).
+Cada estado de cada dominio de negocio (ver `@rentar/shared-types`) tiene un label en español, un
+color semántico y un ícono, decididos una sola vez en `packages/ui/src/tokens/status-meta.ts` y
+resueltos por `getStatusMeta(domain, status)` / `<StatusTag domain status />`. Ningún componente de
+pantalla debería volver a decidir esto.
 
-### Navigation
-- **Style:** text links at label scale (`text-sm font-medium`, `text-ink/80`), hover to `brand-blue`, no underline at rest or on hover.
-- **Mobile:** header collapses to a hamburger below `md:`; the open panel lists the same links as a stacked list plus the two CTA buttons full-width.
+| Dominio | Estados | Color asignado |
+| --- | --- | --- |
+| `propiedad` | borrador, publicada, pausada, alquilada | neutral, success, warning, info |
+| `contrato` | borrador, pendiente_firma, vigente, finalizado, rescindido | neutral, warning, success, info, error |
+| `firma` | pendiente, firmado, rechazado | warning, success, error |
+| `cobro` | pendiente, pagado, vencido, anulado | warning, success, error, neutral |
+| `reclamo` | abierto, en_proceso, resuelto, cerrado | error, warning, success, neutral |
+| `suscripcion` | activa, vencida, cancelada | success, error, neutral |
 
-### Signature Component: the process timeline / loop
-Two purpose-built pieces carry the system's one authored motion idea, and they deliberately mirror each other's structure (4 stages: buscar → contactar → firmar → pagar):
-- **HowItWorks timeline:** numbered `brand-blue` circles (not icons) connected by a hairline `brand-blue/15` rule, laid out horizontally on `sm:` and vertically on mobile; each step fades/slides in on scroll via `IntersectionObserver` and reverses when it leaves view (see Do's and Don'ts).
-- **ProcessLoopMotif (hero):** the same 4-stage idea rendered as a looping diagram — a dashed guide circle, 4 white icon nodes at the cardinal points, and a gold dot that travels the circle every 8s, pulsing each node exactly as it arrives. This is the only place icons (search/chat/pen/receipt, hand-authored single-stroke SVG) appear in the system.
+`UserRole` (`locador`/`locatario`/`garante`/`admin`) queda fuera de este mapa a propósito: un rol
+es identidad, no un estado de ciclo de vida — se muestra con un tag neutro simple en `UserMenu`,
+no con `StatusTag`.
+
+## Inventario de componentes (`@rentar/ui`)
+
+Todos con props tipadas (interface explícita, sin `any`), JSDoc en español, `data-testid`
+configurable en las acciones clave, y sin valores visuales hardcodeados.
+
+**Landing (reutilizables, movidos de `apps/web`)**
+- `Header`, `Footer` — usados por la landing y por `PublicLayout`.
+
+**Layouts** — cuándo usar cada uno:
+- `PublicLayout`: cualquier página pública nueva (Header + contenido + Footer).
+- `AuthLayout`: login, registro, recuperar contraseña — tarjeta centrada con marca. Prop `compact`
+  para previsualizarlo en un contenedor acotado (lo usa el catálogo).
+- `AppShell`: cualquier pantalla autenticada del panel (locador, locatario, garante, admin) —
+  sidebar + header con notificaciones/usuario + contenido. La navegación se recibe por props
+  (`navConfig` por rol vive en `apps/web`, no en el paquete). Prop `compact` con el mismo propósito
+  que en `AuthLayout`.
+
+**Navegación**
+- `PageHeader`: encabezado estándar de una pantalla del panel (breadcrumb + título + acciones).
+
+**Datos**
+- `StatusTag`: estado de dominio (ver arriba).
+- `MoneyAmount`: monto en pesos argentinos; `emphasis` lo pinta de dorado — usar en el monto
+  principal de una vista, no en cada número de una tabla.
+- `IndexBadge`: índice de ajuste (IPC/ICL) con tooltip explicativo.
+- `StatCard`: KPI con título, valor, variación con flecha y color, e ícono.
+- `DataTable`: en mobile (`<640px`) se convierte en lista de tarjetas (una por fila, pares
+  label/valor) en vez de forzar scroll horizontal. Cubre estado de carga (`Skeleton`) y vacío
+  (`Empty`).
+- `DetailList`: pares label/valor para vistas de detalle (wrapper de `Descriptions`).
+- `EmptyState`: sin propiedades/contratos/resultados — icono, texto, acción sugerida.
+- `ActivityTimeline`: historial de eventos de un contrato, cobro o reclamo, con fecha relativa.
+
+**Formularios**
+- `FormSection`: agrupa campos bajo un título y descripción.
+- `WizardLayout`: formulario en pasos (`Steps` + navegación Anterior/Siguiente/Confirmar). No
+  valida nada por su cuenta.
+- `MoneyInput`: `InputNumber` con formato de pesos argentinos ya aplicado.
+- `FileDropzone`: `Upload.Dragger` para fotos/documentos. Nunca sube nada de verdad
+  (`beforeUpload` siempre `false`) — no hay backend en esta etapa (ver la regla de "prototype
+  honesty" en `docs/PRODUCT.md`).
+
+**Feedback**
+- `ConfirmActionModal`: confirmación de una acción destructiva o irreversible.
+- `SimulatedFeatureNotice`: aviso de que una función (pago, firma, notificación) todavía es
+  simulada — usar junto a cualquier flujo que todavía no tenga backend real detrás.
+- `NotificationBell`: campanita con badge de no-leídas y panel desplegable.
+- `UserMenu`: avatar, nombre, rol, cerrar sesión.
+
+**Solo desarrollo**
+- `RoleSwitcher`: selector de rol flotante (`position: fixed`) para ver la app sin autenticación
+  real. No renderiza nada si `NODE_ENV === 'production'`.
+
+## Componentes de la landing
+
+### Botones
+- **Forma:** `radii.pill`, siempre — ningún botón cuadrado o levemente redondeado en ningún lugar.
+- **Primario:** `blue` de fondo / texto blanco / `shadows.button`.
+- **Hover/foco:** el hover del primario oscurece a `blueDark`; todos los estados de foco usan el
+  outline global de 2px en `blue` con 2px de offset (nunca un sustituto de color/glow).
+- **Secundario/ghost:** fondo blanco, texto `blue`, ring `blue/20`, hover rellena con
+  `skyLight`. Usado para acciones de menor énfasis ("Ver cómo funciona", "Iniciar sesión" del
+  header).
+- **Estado placeholder:** "Iniciar sesión"/"Publicar propiedad" del header y "Buscar más
+  propiedades" del grid se renderizan como botones primarios/secundarios reales sin destino
+  todavía (ver `docs/PRODUCT.md`) — nunca deben verse deshabilitados o rotos, solo genuinamente
+  estilizados y sin acción por ahora.
+
+### Chips (características de SearchBar)
+- **Estilo:** pill, borde por default (`ink/10` sobre `paper`); el estado seleccionado invierte a
+  `blue` sólido.
+- **Estado:** toggle (multi-select), `aria-pressed` refleja el estado — un solo lenguaje visual de
+  chip en todo el sistema.
+
+### Tarjetas / contenedores
+- **Esquina:** `radii.lg` (`PropertyCard`, panel de `SearchBar`).
+- **Fondo:** blanco sólido sobre la página `paper`.
+- **Sombra:** ver Elevación — reposo `shadows.resting`, elevado solo en hover de `PropertyCard`.
+- **Borde:** ring `ink/5` hairline, sin color de borde visible.
+
+### Inputs / campos
+- **Estilo:** fondo `paper` (no blanco) para sensación de inset, borde `ink/10`, `radii.sm`.
+- **Foco:** el borde cambia a `blue`, sin glow/sombra agregada.
+- **Slider de rango:** input nativo estilizado con `accent-blue`; el valor actual siempre se
+  repite en el texto del label (nunca escondido solo detrás de la posición del thumb).
+
+### Navegación
+- **Estilo:** links de texto a escala label, hover a `blue`, sin subrayado en reposo ni en hover.
+- **Mobile:** el header colapsa a un hamburguesa por debajo de `md:`; el panel abierto lista los
+  mismos links como lista apilada más los dos botones CTA a ancho completo.
+
+### Componente insignia: el timeline/loop de proceso
+Dos piezas hechas a medida llevan la única idea de movimiento autoral del sistema, y
+deliberadamente reflejan la misma estructura de 4 etapas: buscar → contactar → firmar → pagar.
+- **Timeline de HowItWorks:** círculos numerados `blue` (no íconos) conectados por una regla
+  hairline `blue/15`, horizontal en `sm:` y vertical en mobile; cada paso aparece/desliza al
+  entrar en scroll vía `IntersectionObserver` y revierte al salir de vista.
+- **ProcessLoopMotif (hero):** la misma idea de 4 etapas como un diagrama en loop — un círculo guía
+  punteado, 4 nodos blancos de ícono en los puntos cardinales, y un punto dorado que recorre el
+  círculo cada 8s, pulsando cada nodo al llegar. Es el único lugar donde aparecen íconos
+  (buscar/chat/firma/recibo, SVG de trazo único hechos a mano) en el sistema.
 
 ## Do's and Don'ts
 
-### Do:
-- **Do** keep gold (`#D7B15D`/`#8C6B1D`) tied to money/value content only (price line, selection highlight); everywhere else gold is atmosphere, not content color.
-- **Do** use `rounded-full` for every button/badge/chip and `rounded-2xl`/`rounded-3xl` for containers — no other radius values.
-- **Do** drive any "in/out of view" animation off a persistent `IntersectionObserver` that toggles both ways, so a section that already played its entrance replays it correctly if the user scrolls away and back (this was a shipped bug fix — see HowItWorks' `useInView`).
-- **Do** pair a CSS `transform` animation only with elements that have no SVG `transform` *attribute* on the same node — nest a static positioning `<g>` around an animated inner `<g>` instead (see ProcessLoopMotif; mixing the two silently drops the attribute's translate in spec-compliant browsers).
+### Hacer:
+- Mantener el dorado (`money`/`moneyInk`) atado solo a contenido de dinero/valor (línea de precio,
+  `MoneyAmount`, highlight de selección); en cualquier otro lugar es atmósfera, no color de
+  contenido.
+- Usar `radii.pill` para todo botón/badge/chip y `radii.lg`/`radii.xl` para contenedores — ningún
+  otro radio.
+- Manejar una animación de "entra/sale de vista" con un `IntersectionObserver` persistente que
+  alterne en ambos sentidos, así una sección ya vista se re-anima si el usuario sale y vuelve a
+  entrar (ver `useInView`, usado por `HowItWorks`).
+- Emparejar una animación CSS `transform` solo con elementos que no tengan un atributo SVG
+  `transform` en el mismo nodo — anidar un `<g>` de posicionamiento estático alrededor de un `<g>`
+  interno animado en su lugar (ver `ProcessLoopMotif`; mezclar los dos hace que el navegador
+  descarte el atributo silenciosamente).
+- Consumir los componentes de `@rentar/ui` antes de escribir uno nuevo — si algo parecido ya
+  existe, extenderlo en vez de duplicarlo.
+- Tokenizar cualquier color/radio/sombra/espaciado nuevo en `packages/ui/src/tokens`, nunca
+  hardcodeado en un `.module.css` o un `style={{}}` inline.
 
-### Don't:
-- **Don't** put a small uppercase/tracked "kicker" label directly above any H1/H2/H3 — ever, regardless of how tempting it is to add context above a heading (The No-Eyebrow Rule).
-- **Don't** build a new section as a row of identical icon+heading+paragraph cards — that page-scaffold default is explicitly rejected in this system; find a structure specific to the content (see the HowItWorks timeline as the model to follow instead).
-- **Don't** use `ink/60`, `ink/50`, or raw `brand-gold` for text of any size — they fall under the 4.5:1 contrast floor on this system's light backgrounds (The Contrast Rule).
-- **Don't** add a second typeface, a colored `border-left`/`border-right` accent, gradient text, or a hard offset/neobrutalist shadow — none of these belong to this world.
+### No hacer:
+- Poner un label "kicker" en mayúsculas/tracking directamente arriba de un H1/H2/H3 — nunca, por
+  más tentador que sea agregar contexto arriba de un heading (la regla de no-eyebrow).
+- Construir una sección nueva como una fila de tarjetas idénticas ícono+heading+párrafo — ese
+  default de estructura de página está explícitamente rechazado en este sistema.
+- Usar `ink/60`, `ink/50` o el dorado crudo para texto de cualquier tamaño — caen debajo del piso
+  de contraste 4.5:1 (la regla de contraste).
+- Sumar una segunda tipografía, un acento de borde de color, texto en degradé o una sombra dura
+  tipo neobrutalista — ninguno de estos pertenece a este mundo.
+- Hardcodear un hex/rgba en un `.module.css` cuando ya existe un token equivalente en
+  `@rentar/ui` — si hace falta un valor nuevo, se agrega al token, no al componente.

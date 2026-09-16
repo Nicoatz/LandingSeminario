@@ -38,6 +38,11 @@ Cada carpeta vacía o placeholder tiene su propio `README.md` con más detalle.
 - Node.js >= 20.9 (ver `.nvmrc`), npm workspaces (sin Turborepo).
 - `apps/web`: Next.js 16.3.5 (App Router) + React 19.2.8 + TypeScript + Ant Design 6.6.3
   (`@ant-design/nextjs-registry` para SSR de estilos).
+- `packages/ui` (`@rentar/ui`): design system en código — tokens (`packages/ui/src/tokens/`),
+  tema light/dark de antd (`cssVar` activado) y componentes reutilizables (layouts, navegación,
+  datos, formularios, feedback). Catálogo vivo en `/design-system` (con toggle de tema); detalle en
+  prosa en [`docs/DESIGN.md`](docs/DESIGN.md) y guía de uso en
+  [`packages/ui/README.md`](packages/ui/README.md).
 - `apps/api`: Node.js + Express + Swagger (todavía no implementado, ver `apps/api/README.md`).
 - `supabase/`: Postgres vía Supabase (todavía sin esquema).
 - TypeScript en `strict: true` en todo el monorepo (`tsconfig.base.json`). **Nada de `any`** — si
@@ -52,9 +57,18 @@ Cada carpeta vacía o placeholder tiene su propio `README.md` con más detalle.
 - **Componentes:** un archivo `Componente.tsx` + `Componente.module.css` cuando el componente
   necesita estilos que los tokens de antd no cubren (layout, spacing). Props siempre tipadas con
   una interfaz explícita (`interface ComponenteProps { ... }`), nunca con `any`.
-- **Tokens de diseño:** los componentes de `apps/web` consumen el tema y los colores desde
-  `@rentar/ui` (`brand`, `antdTheme`) — nunca un color hardcodeado suelto en un componente. Si
-  hace falta un color nuevo, se agrega a `packages/ui/src/theme.ts`, no inline.
+- **Usar siempre los componentes de `@rentar/ui` antes de crear uno nuevo.** Si algo parecido ya
+  existe (`StatusTag`, `MoneyAmount`, `DataTable`, `AppShell`, etc. — ver el inventario completo en
+  [`docs/DESIGN.md`](docs/DESIGN.md#inventario-de-componentes-rentarui)), extenderlo o componerlo
+  en vez de duplicar su lógica en `apps/web`.
+- **Nada de valores visuales hardcodeados.** Ningún `.module.css` ni `style={{}}` inline lleva un
+  color/radio/sombra/tamaño de espaciado en crudo (`#004D98`, `rgba(18,32,46,0.7)`, `16px`, etc.).
+  En lógica de componente (`.tsx`), tokenizar importando de `@rentar/ui` (`seed`, `colorScales`,
+  `radii`, `spacing`, `shadows`, `light`/`dark`). En CSS propio (`.module.css`), usar las
+  variables `var(--rentar-*)` de `packages/ui/src/tokens/css-vars.css` — **no** las
+  `var(--ant-*)` que genera `cssVar` en `theme.ts`, que solo están disponibles dentro del árbol
+  DOM de un componente de antd, no para CSS propio de layout. Si hace falta un valor nuevo, se
+  agrega como token en `packages/ui/src/tokens/`, nunca inline en el componente que lo necesita.
 - **Alias de import:** `@/*` dentro de `apps/web` (resuelve a `apps/web/src/*`); `@rentar/ui` y
   `@rentar/shared-types` para los paquetes del workspace.
 
@@ -89,6 +103,13 @@ ni de texto visible:
 | `search-result-count` | SearchBar | Contador de resultados (`role="status"`) |
 | `landing-more-properties-button` | Landing | "Buscar más propiedades" (placeholder) |
 | `property-card-detail-button` | PropertyCard | "Ver detalle" (placeholder) |
+
+Los componentes de `@rentar/ui` también exponen `data-testid` propios en sus acciones clave (ej.
+`wizard-next-button`/`wizard-prev-button`/`wizard-finish-button` en `WizardLayout`,
+`app-shell-menu-toggle` en `AppShell`, `confirm-action-ok`/`confirm-action-cancel` en
+`ConfirmActionModal`) — no están en esta tabla porque todavía no están montados en ninguna página
+real de `apps/web` (solo en el catálogo `/design-system`); se documentan acá cuando pasen a usarse
+en una pantalla de verdad.
 
 ## Estrategia de ramas
 
