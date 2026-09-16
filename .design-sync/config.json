@@ -1,4 +1,19 @@
 {
   "projectId": "0f707fbd-bf3d-4fbc-a8f3-74c68d6e4cb7",
-  "shape": "package"
+  "shape": "package",
+  "pkg": "@rentar/ui",
+  "globalName": "RentarUI",
+  "buildCmd": "npm run build --workspace=@rentar/ui",
+  "cssEntry": "dist/index.css",
+  "readmeHeader": ".design-sync/conventions.md",
+  "provider": {
+    "component": "ThemeProvider"
+  },
+  "overrides": {
+    "ConfirmActionModal": { "cardMode": "single", "viewport": "480x360" },
+    "DataTable": { "cardMode": "column" },
+    "Header": { "cardMode": "column" },
+    "PublicLayout": { "cardMode": "column" },
+    "RoleSwitcher": { "cardMode": "single", "primaryStory": "Default" }
+  }
 }
