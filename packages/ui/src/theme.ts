@@ -1,3 +1,10 @@
+import type { ThemeConfig } from 'antd'
+
+/**
+ * Paleta de marca de RentAR. Fuente de verdad de todos los colores del sistema
+ * (ver docs/DESIGN.md) — ningún componente debería usar un color hardcodeado
+ * en su lugar.
+ */
 export const brand = {
   blue: '#004D98',
   blueDark: '#003B74',
@@ -7,9 +14,13 @@ export const brand = {
   skyLight: '#E3F2FB',
   ink: '#12202E',
   paper: '#F7F9FB',
-}
+} as const
 
-export const antdTheme = {
+/**
+ * Tema de Ant Design (`ConfigProvider`) construido a partir de `brand`. Se
+ * consume desde `apps/web/src/app/layout.tsx` envolviendo toda la app.
+ */
+export const antdTheme: ThemeConfig = {
   token: {
     colorPrimary: brand.blue,
     colorPrimaryHover: brand.blueDark,
