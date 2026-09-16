@@ -1,2 +1,8 @@
 export { Header } from './Header'
 export { Footer } from './Footer'
+export * from './layouts'
+export * from './navigation'
+export * from './data'
+export * from './forms'
+export * from './feedback'
+export * from './dev'

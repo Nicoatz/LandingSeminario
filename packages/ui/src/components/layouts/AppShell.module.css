@@ -1,0 +1,60 @@
+.layout {
+  min-height: 100vh;
+}
+
+.sider {
+  background: var(--rentar-color-bg-surface);
+  border-right: 1px solid var(--rentar-color-border-hairline);
+}
+
+@media (max-width: 1023px) {
+  .sider {
+    display: none;
+  }
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background: var(--rentar-color-bg-surface);
+  border-bottom: 1px solid var(--rentar-color-border-hairline);
+  padding: 0 1.5rem;
+  height: 4rem;
+  line-height: 4rem;
+}
+
+.menuButton {
+  display: grid;
+  place-items: center;
+  height: 2.5rem;
+  width: 2.5rem;
+  border: none;
+  background: none;
+  color: var(--rentar-color-text-primary);
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .menuButton {
+    display: none;
+  }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.content {
+  padding: 1.5rem;
+  background: var(--rentar-color-bg-page);
+}

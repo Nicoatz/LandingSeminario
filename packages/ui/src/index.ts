@@ -15,4 +15,4 @@ export {
 } from './tokens'
 export type { ColorScale, SemanticColorKey, SemanticColors, StatusMeta } from './tokens'
 export { formatARS, formatDate, formatPeriod, formatRelative, getStatusMeta } from './utils'
-export { Header, Footer } from './components'
+export * from './components'
