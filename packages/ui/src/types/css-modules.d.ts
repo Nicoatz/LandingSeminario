@@ -5,3 +5,8 @@ declare module '*.module.css' {
   const classes: { readonly [key: string]: string }
   export default classes
 }
+
+// Import de efecto (`import './tokens/css-vars.css'`), sin export default —
+// lo usa design-sync-entry.ts para empaquetar las variables --rentar-* en
+// el build de /design-sync.
+declare module '*.css'
