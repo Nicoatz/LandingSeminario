@@ -5,23 +5,26 @@ import { theme as antdThemeApi, type ThemeConfig } from 'antd'
 // layout raíz, un Server Component, donde Context no está disponible —
 // pasar por el barrel rompería el build con "createContext is not a
 // function" aunque este archivo no use statusMeta para nada.
-import { colorScales, radii, shadows, typography } from './tokens/primitives'
+import { colorScales, radii, seed, shadows, typography } from './tokens/primitives'
 import { light, dark } from './tokens/semantic'
 
 /**
  * Paleta de marca "plana" (compatibilidad con código existente que importa
- * `brand` en vez de los tokens nuevos). Nuevo código debería preferir
- * `import { seed, colorScales, light, dark } from '@rentar/ui'`.
+ * `brand` en vez de los tokens nuevos). Valores literales de `seed`, no
+ * derivados de `colorScales` — son los mismos 8 hex exactos que ya
+ * documentaba DESIGN.md antes de este refactor, y no tienen por qué
+ * coincidir con ningún paso generado algorítmicamente. Nuevo código debería
+ * preferir `import { seed, colorScales, light, dark } from '@rentar/ui'`.
  */
 export const brand = {
-  blue: light.info,
-  blueDark: colorScales.blue[700],
-  gold: light.money,
-  goldInk: light.moneyInk,
-  sky: colorScales.sky[400],
-  skyLight: colorScales.sky[50],
-  ink: light.textPrimary,
-  paper: light.bgPage,
+  blue: seed.blue,
+  blueDark: seed.blueDark,
+  gold: seed.gold,
+  goldInk: seed.goldInk,
+  sky: seed.sky,
+  skyLight: seed.skyLight,
+  ink: seed.ink,
+  paper: seed.paper,
 } as const
 
 /**

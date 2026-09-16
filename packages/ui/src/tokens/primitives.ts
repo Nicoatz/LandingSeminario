@@ -6,8 +6,12 @@ import { generate } from '@ant-design/colors'
  */
 export const seed = {
   blue: '#004D98',
+  blueDark: '#003B74',
   gold: '#D7B15D',
+  goldInk: '#8C6B1D',
   sky: '#A0D1EF',
+  /** "Celeste Cordobés Claro" — tinte documentado en DESIGN.md, no un paso generado de `sky`. */
+  skyLight: '#E3F2FB',
   ink: '#12202E',
   paper: '#F7F9FB',
 } as const
@@ -37,7 +41,13 @@ export const colorScales = {
   sky: toScale(generate(seed.sky)),
 } as const
 
-/** Mismas escalas, recalculadas para fondo oscuro (usadas por el tema dark del catálogo). */
+/**
+ * Mismas escalas, recalculadas para fondo oscuro (usadas por el tema dark
+ * del catálogo). Ojo: acá el índice va de oscuro (paso "50") a claro (paso
+ * "900") — al revés que en `colorScales`, donde "50" es el más claro y
+ * "900" el más oscuro. Es el propio algoritmo de antd para paletas dark
+ * (optimiza para fondos oscuros con acentos claros), no un error de acá.
+ */
 export const darkColorScales = {
   blue: toScale(generate(seed.blue, { theme: 'dark' })),
   gold: toScale(generate(seed.gold, { theme: 'dark' })),

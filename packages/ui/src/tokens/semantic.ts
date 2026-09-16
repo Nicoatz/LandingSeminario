@@ -1,4 +1,4 @@
-import { colorScales, darkColorScales, seed } from './primitives'
+import { colorScales, seed } from './primitives'
 
 /** Las 5 claves de color con significado (no ligadas a un dominio puntual). */
 export type SemanticColorKey = 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'money'
@@ -26,7 +26,7 @@ export interface SemanticColors {
 export const light: SemanticColors = {
   bgPage: seed.paper,
   bgSurface: '#ffffff',
-  bgSurfaceAlt: colorScales.sky[50],
+  bgSurfaceAlt: seed.skyLight,
   textPrimary: seed.ink,
   textSecondary: 'rgba(18, 32, 46, 0.7)',
   textTertiary: 'rgba(18, 32, 46, 0.6)',
@@ -47,7 +47,11 @@ export const light: SemanticColors = {
 export const dark: SemanticColors = {
   bgPage: '#0B1420',
   bgSurface: '#12202E',
-  bgSurfaceAlt: darkColorScales.sky[900],
+  // Nota: en la escala "dark" de generate(), el índice va de oscuro (bajo)
+  // a claro (alto) — al revés que en la escala "light" (donde 900 es el más
+  // oscuro). Para evitar confundirlos, bgSurfaceAlt en dark es un literal a
+  // mano, no un paso de darkColorScales.
+  bgSurfaceAlt: '#16283A',
   textPrimary: '#F7F9FB',
   textSecondary: 'rgba(247, 249, 251, 0.72)',
   textTertiary: 'rgba(247, 249, 251, 0.58)',
@@ -57,6 +61,8 @@ export const dark: SemanticColors = {
   error: '#FB7185',
   info: colorScales.blue[400],
   neutral: 'rgba(247, 249, 251, 0.5)',
+  // El dorado no cambia entre claro y oscuro (ver css-vars.css) — se
+  // mantienen los mismos valores que en `light` a propósito.
   money: seed.gold,
-  moneyInk: colorScales.gold[300],
+  moneyInk: seed.goldInk,
 }
