@@ -32,6 +32,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <ConfigProvider theme={antdTheme}>{children}</ConfigProvider>
         </AntdRegistry>
       {/* impeccable-live-start */}
+{/* eslint-disable-next-line @next/next/no-sync-scripts */}
 <script src="http://localhost:8400/live.js?token=ff1a1f09-56e1-42ee-92b4-8792e5d0840e"></script>
 {/* impeccable-live-end */}
 </body>

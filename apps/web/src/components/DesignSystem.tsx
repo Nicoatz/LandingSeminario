@@ -350,7 +350,7 @@ export default function DesignSystem() {
                 parece un escritorio honesto, bien llevado.
               </p>
               <ul className={styles.characteristicsList}>
-                <li>Azul institucional profundo como único color "fuerte" para lo interactivo; dorado reservado para dinero/valor.</li>
+                <li>Azul institucional profundo como único color &quot;fuerte&quot; para lo interactivo; dorado reservado para dinero/valor.</li>
                 <li>Redondeo grande y consistente — pill buttons, contenedores rounded-2xl/3xl — nunca esquinas rectas.</li>
                 <li>Tarjetas blancas suavemente elevadas sobre una página apenas fuera de blanco.</li>
                 <li>Un solo momento de movimiento autoral por vista (loop del hero; timeline con scroll-reveal).</li>
@@ -526,7 +526,7 @@ export default function DesignSystem() {
             <p className={styles.sectionLead}>
               Fondo paper (no blanco) para sensación de inset dentro de la tarjeta blanca, borde
               hairline y radio pequeño (rounded-lg). El foco cambia el borde a azul, sin glow. Es
-              el mismo componente que arma los selects "Zona" y "Tipología" del buscador.
+              el mismo componente que arma los selects &quot;Zona&quot; y &quot;Tipología&quot; del buscador.
             </p>
             <DropdownsDemo />
           </section>
