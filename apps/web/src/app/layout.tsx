@@ -3,7 +3,14 @@ import type { ReactNode } from 'react'
 import { League_Spartan } from 'next/font/google'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { ConfigProvider } from 'antd'
-import { antdTheme } from '@rentar/ui'
+// Import directo de theme.ts/locale.ts (no del barrel @rentar/ui): ese
+// barrel también re-exporta statusMeta (usa @ant-design/icons, que usa
+// Context de React). Este layout es un Server Component, donde Context no
+// existe — pasar por el barrel rompe el build. Ver el comentario en
+// packages/ui/src/theme.ts.
+import { antdTheme } from '@rentar/ui/src/theme'
+import { antdLocale } from '@rentar/ui/src/locale'
+import '@rentar/ui/src/tokens/css-vars.css'
 import './globals.css'
 
 const leagueSpartan = League_Spartan({
@@ -29,7 +36,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="es-AR" className={leagueSpartan.variable}>
       <body>
         <AntdRegistry>
-          <ConfigProvider theme={antdTheme}>{children}</ConfigProvider>
+          <ConfigProvider theme={antdTheme} locale={antdLocale}>
+            {children}
+          </ConfigProvider>
         </AntdRegistry>
       {/* impeccable-live-start */}
 {/* eslint-disable-next-line @next/next/no-sync-scripts */}

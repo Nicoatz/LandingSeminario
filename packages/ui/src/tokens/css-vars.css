@@ -1,0 +1,25 @@
+/*
+ * Variables CSS que antd no expone como token propio (activando `cssVar: true`
+ * en el tema, antd sí publica el resto — colorPrimary, colorSuccess, colorText,
+ * borderRadius, sizeXS..sizeXXL, etc. — como `var(--ant-*)`; estos son solo
+ * los extras de marca). Se importa una vez desde apps/web/src/app/layout.tsx.
+ *
+ * El espaciado de layout (--rentar-spacing-*) es una escala propia, separada
+ * de los tokens `size*` internos de antd: forzar `size*` a esta escala
+ * distorsionaría el padding/tamaño interno de todos los componentes de antd
+ * (Button, Input, etc.), que ya están afinados a mano más abajo en theme.ts.
+ */
+:root {
+  --rentar-radius-pill: 9999px;
+  --rentar-shadow-resting: 0 1px 2px 0 rgba(18, 32, 46, 0.05), 0 1px 3px 0 rgba(18, 32, 46, 0.06);
+  --rentar-shadow-lifted: 0 10px 15px -3px rgba(18, 32, 46, 0.1), 0 4px 6px -4px rgba(18, 32, 46, 0.1);
+  --rentar-shadow-button: 0 10px 25px -5px rgba(0, 77, 152, 0.35);
+  --rentar-shadow-deep: 0 25px 50px -12px rgba(0, 77, 152, 0.2);
+  --rentar-shadow-form: 0 20px 25px -5px rgba(0, 77, 152, 0.1);
+
+  --rentar-spacing-xs: 0.5rem;
+  --rentar-spacing-sm: 1rem;
+  --rentar-spacing-md: 1.5rem;
+  --rentar-spacing-lg: 2.5rem;
+  --rentar-spacing-xl: 4rem;
+}
