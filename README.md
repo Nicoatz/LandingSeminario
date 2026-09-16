@@ -1,29 +1,46 @@
-# RentAR — Landing (Next.js + Ant Design)
+# RentAR
 
-Landing page prototype for RentAR — direct, agency-free long-term rentals in Córdoba, Argentina.
+Monorepo de RentAR — plataforma para gestionar alquileres residenciales de larga duración
+directamente entre locador, locatario y garante, sin inmobiliaria. Piloto en Córdoba, Argentina.
+Proyecto académico de Seminario Integrador (Ingeniería en Sistemas de Información, UTN FRC, 2026).
 
-This is a stack migration of the original `../landing/` prototype (Vite + React + Tailwind) onto **Next.js (App Router) + JavaScript + Ant Design**. Same visual design, same content, same client-side-only mock data — different implementation. See `PRODUCT.md` and `DESIGN.md` for the product and design system this build follows.
+## Requisitos
 
-## Getting started
+- Node.js >= 20.9 (usar la versión de `.nvmrc`: `nvm use`, si tenés `nvm` instalado).
+- npm (viene con Node). El monorepo usa **npm workspaces**, no hace falta instalar pnpm ni
+  Turborepo.
+
+## Instalar y correr
 
 ```bash
+git clone <url-del-repo>
+cd LandingSeminario
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Abrí [http://localhost:3000](http://localhost:3000). `npm run dev` levanta `apps/web` (la landing);
+es un alias de `npm run dev:web`.
 
-## Scripts
+Otros comandos útiles desde la raíz:
 
-- `npm run dev` — start the dev server
-- `npm run build` — production build
-- `npm run start` — run the production build
-- `npm run lint` — lint with ESLint
+```bash
+npm run build       # build de producción de apps/web
+npm run lint         # ESLint en todos los workspaces
+npm run typecheck    # chequeo de tipos (tsc --noEmit) en todos los workspaces
+```
 
-## Project structure
+## Qué hay en cada carpeta
 
-- `app/` — routes, root layout (fonts, `ConfigProvider` theme, metadata), global CSS
-- `components/` — page sections and UI (each paired with a CSS module for layout/spacing antd tokens don't cover)
-- `lib/theme.js` — Ant Design `ConfigProvider` theme tokens mapped from the RentAR brand palette
-- `lib/data/`, `lib/types/`, `lib/utils/` — mock property data, filter defaults, formatting helpers
-- `assets/` — logo and property photos (imported directly, optimized via `next/image`)
+| Carpeta | Qué es | Preguntarle a |
+| --- | --- | --- |
+| `apps/web` | Landing en Next.js + Ant Design + TypeScript | Nico A |
+| `apps/api` | Backend Node.js + Express + Swagger (placeholder, todavía no implementado) | Thiago D'Andrea, Camila Carrizo |
+| `packages/ui` | Tema de Ant Design (`@rentar/ui`) y futuros componentes propios reutilizables | Nico A |
+| `packages/shared-types` | Interfaces TypeScript de dominio compartidas entre `apps/web` y `apps/api` | Nico A / Thiago D'Andrea |
+| `docs/` | `PRODUCT.md`, `DESIGN.md` y recursos de marca/competencia | Nico A |
+| `supabase/` | Migraciones y seed de la base de datos | Ivan Diaz |
+| `tests/e2e/` | Scripts de Selenium | Tomás Rosales |
+
+Para convenciones de código, estrategia de ramas y más detalle de arquitectura, ver
+[`CLAUDE.md`](CLAUDE.md).
