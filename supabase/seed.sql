@@ -1,0 +1,8 @@
+-- supabase/seed.sql
+--
+-- Datos iniciales para poblar una instancia local/de desarrollo de Supabase.
+-- Responsable: Ivan Diaz (base de datos).
+--
+-- Vacío por ahora: no hay esquema todavía (ver supabase/migrations/). Cuando exista, este archivo
+-- debería insertar un set mínimo de datos de ejemplo (barrios, propiedades demo, usuarios de
+-- prueba) coherente con los mocks que hoy vive en apps/web/src/lib/data/.

@@ -1,0 +1,9 @@
+{
+  "name": "@rentar/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend RentAR (Node.js + Express + Swagger) — placeholder, ver README.md",
+  "scripts": {
+    "dev": "echo \"apps/api todavia no tiene servidor: ver apps/api/README.md\" && exit 1"
+  }
+}
