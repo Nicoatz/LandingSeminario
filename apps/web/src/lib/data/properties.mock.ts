@@ -1,21 +1,31 @@
-import altaCordoba1 from '../../assets/properties/alta-cordoba-1.jpg'
-import altaCordoba2 from '../../assets/properties/alta-cordoba-2.jpg'
-import altaCordoba3 from '../../assets/properties/alta-cordoba-3.jpg'
-import centro1 from '../../assets/properties/centro-1.jpg'
-import centro2 from '../../assets/properties/centro-2.jpg'
-import centro3 from '../../assets/properties/centro-3.jpg'
-import cofico1 from '../../assets/properties/cofico-1.jpg'
-import cofico2 from '../../assets/properties/cofico-2.jpg'
-import generalPaz1 from '../../assets/properties/general-paz-1.jpg'
-import generalPaz2 from '../../assets/properties/general-paz-2.jpg'
-import guemes1 from '../../assets/properties/guemes-1.jpg'
-import guemes2 from '../../assets/properties/guemes-2.jpg'
-import nuevaCordoba1 from '../../assets/properties/nueva-cordoba-1.jpg'
-import nuevaCordoba2 from '../../assets/properties/nueva-cordoba-2.jpg'
-import nuevaCordoba3 from '../../assets/properties/nueva-cordoba-3.jpg'
-import nuevaCordoba4 from '../../assets/properties/nueva-cordoba-4.jpg'
+import type { StaticImageData } from 'next/image'
+import type { CharacteristicOption, Property } from '@rentar/shared-types'
+import altaCordoba1 from '@/assets/properties/alta-cordoba-1.jpg'
+import altaCordoba2 from '@/assets/properties/alta-cordoba-2.jpg'
+import altaCordoba3 from '@/assets/properties/alta-cordoba-3.jpg'
+import centro1 from '@/assets/properties/centro-1.jpg'
+import centro2 from '@/assets/properties/centro-2.jpg'
+import centro3 from '@/assets/properties/centro-3.jpg'
+import cofico1 from '@/assets/properties/cofico-1.jpg'
+import cofico2 from '@/assets/properties/cofico-2.jpg'
+import generalPaz1 from '@/assets/properties/general-paz-1.jpg'
+import generalPaz2 from '@/assets/properties/general-paz-2.jpg'
+import guemes1 from '@/assets/properties/guemes-1.jpg'
+import guemes2 from '@/assets/properties/guemes-2.jpg'
+import nuevaCordoba1 from '@/assets/properties/nueva-cordoba-1.jpg'
+import nuevaCordoba2 from '@/assets/properties/nueva-cordoba-2.jpg'
+import nuevaCordoba3 from '@/assets/properties/nueva-cordoba-3.jpg'
+import nuevaCordoba4 from '@/assets/properties/nueva-cordoba-4.jpg'
 
-export const characteristicOptions = [
+/**
+ * Propiedad de mock con la imagen ya resuelta por Next.js. `StaticImageData`
+ * es específico de `next/image` y no existe en el tipo de dominio `Property`
+ * de `@rentar/shared-types` (ese paquete no depende de Next), así que se
+ * compone acá.
+ */
+export type MockProperty = Property & { image: StaticImageData }
+
+export const characteristicOptions: CharacteristicOption[] = [
   { key: 'amoblado', label: 'Amoblado' },
   { key: 'mascotas', label: 'Acepta mascotas' },
   { key: 'cochera', label: 'Cochera' },
@@ -23,7 +33,7 @@ export const characteristicOptions = [
   { key: 'apto-profesional', label: 'Apto profesional' },
 ]
 
-export const properties = [
+export const properties: MockProperty[] = [
   {
     id: 'p1',
     title: 'Monoambiente luminoso a metros de Plaza España',

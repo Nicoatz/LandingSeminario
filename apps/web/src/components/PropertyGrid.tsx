@@ -1,7 +1,18 @@
 import { Col, Empty, Row } from 'antd'
+import type { MockProperty } from '@/lib/data/properties.mock'
 import PropertyCard from './PropertyCard'
 
-export default function PropertyGrid({ properties }) {
+/** Props de {@link PropertyGrid}. */
+interface PropertyGridProps {
+  /** Propiedades ya filtradas a mostrar (la landing las recorta a 8 antes de pasarlas). */
+  properties: MockProperty[]
+}
+
+/**
+ * Grilla responsive de tarjetas de propiedad. Muestra un estado vacío
+ * (`Empty`) cuando el filtrado no encuentra resultados.
+ */
+export default function PropertyGrid({ properties }: PropertyGridProps) {
   if (properties.length === 0) {
     return (
       <Empty

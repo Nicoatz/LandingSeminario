@@ -8,6 +8,11 @@ import { MenuOutlined, CloseOutlined } from '@ant-design/icons'
 import logo from '@/assets/logo-rentar.svg'
 import styles from './Header.module.css'
 
+/**
+ * Encabezado fijo de la landing: logo, navegación de anclas, CTAs de sesión
+ * (placeholders sin destino todavía, ver PRODUCT.md) y menú hamburguesa en
+ * mobile (`Drawer` de antd).
+ */
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -28,10 +33,12 @@ export default function Header() {
         </nav>
 
         <div className={styles.desktopActions}>
-          <Button type="text" style={{ color: '#004D98', fontWeight: 600 }}>
+          <Button type="text" style={{ color: '#004D98', fontWeight: 600 }} data-testid="header-login-button">
             Iniciar sesión
           </Button>
-          <Button type="primary">Publicar propiedad</Button>
+          <Button type="primary" data-testid="header-publish-button">
+            Publicar propiedad
+          </Button>
         </div>
 
         <button
@@ -41,6 +48,7 @@ export default function Header() {
           aria-controls="mobile-menu"
           aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
           onClick={() => setMenuOpen(true)}
+          data-testid="header-menu-toggle"
         >
           <MenuOutlined style={{ fontSize: 20 }} />
         </button>

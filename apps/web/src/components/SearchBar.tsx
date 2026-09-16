@@ -1,13 +1,41 @@
 'use client'
 
 import { Card, Col, InputNumber, Row, Select, Slider, Tag } from 'antd'
+import type { FilterState } from '@rentar/shared-types'
 import { characteristicOptions } from '@/lib/data/properties.mock'
 import { neighborhoods } from '@/lib/data/neighborhoods'
-import { MAX_PRICE_CEILING } from '@/lib/types/filters'
 import { formatMonthlyPrice } from '@/lib/utils/format'
 import styles from './SearchBar.module.css'
 
-export default function SearchBar({ filters, onChange, resultCount }) {
+/** Da formato de miles al valor mostrado en los campos de precio (ej. `580000` -> "$ 580.000"). */
+function formatPriceInput(value: number | undefined): string {
+  if (value === undefined) return ''
+  return `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
+/** Revierte {@link formatPriceInput} a un número editable. */
+function parsePriceInput(displayValue: string | undefined): number {
+  if (!displayValue) return 0
+  return Number(displayValue.replace(/\$\s?|(\.)/g, ''))
+}
+
+/** Props de {@link SearchBar}. */
+interface SearchBarProps {
+  /** Estado actual de los filtros. */
+  filters: FilterState
+  /** Notifica el nuevo estado de filtros cada vez que el usuario cambia uno. */
+  onChange: (filters: FilterState) => void
+  /** Cantidad de propiedades que matchean los filtros actuales (se anuncia con `role="status"`). */
+  resultCount: number
+}
+
+/**
+ * Buscador/filtro de la landing: zona, tipología, dormitorios, rango de
+ * precio (campos numéricos + slider sincronizados) y características
+ * (chips multi-select). Es controlado en su totalidad por `filters`/`onChange`
+ * desde `Landing`, no tiene estado propio.
+ */
+export default function SearchBar({ filters, onChange, resultCount }: SearchBarProps) {
   return (
     <Card id="buscar" className={styles.card}>
       <div className={styles.priceRowsWrap}>
@@ -20,7 +48,8 @@ export default function SearchBar({ filters, onChange, resultCount }) {
               id="filtro-barrio"
               className={styles.control}
               value={filters.neighborhoodSlug}
-              onChange={(value) => onChange({ ...filters, neighborhoodSlug: value })}
+              onChange={(value: string) => onChange({ ...filters, neighborhoodSlug: value })}
+              data-testid="search-neighborhood-select"
               options={[
                 { value: 'todos', label: 'Todos los barrios' },
                 ...neighborhoods.map((n) => ({ value: n.slug, label: n.name })),
@@ -36,7 +65,8 @@ export default function SearchBar({ filters, onChange, resultCount }) {
               id="filtro-tipologia"
               className={styles.control}
               value={filters.type}
-              onChange={(value) => onChange({ ...filters, type: value })}
+              onChange={(value: FilterState['type']) => onChange({ ...filters, type: value })}
+              data-testid="search-type-select"
               options={[
                 { value: 'todos', label: 'Todas' },
                 { value: 'departamento', label: 'Departamento' },
@@ -54,12 +84,13 @@ export default function SearchBar({ filters, onChange, resultCount }) {
               id="filtro-dormitorios"
               className={styles.control}
               value={String(filters.bedrooms)}
-              onChange={(value) =>
+              onChange={(value: string) =>
                 onChange({
                   ...filters,
                   bedrooms: value === 'todos' ? 'todos' : Number(value),
                 })
               }
+              data-testid="search-bedrooms-select"
               options={[
                 { value: 'todos', label: 'Todos' },
                 { value: '1', label: '1' },
@@ -82,13 +113,14 @@ export default function SearchBar({ filters, onChange, resultCount }) {
                 size="large"
                 controls={false}
                 min={0}
-                max={filters.maxPrice ?? 1000000}
+                max={filters.maxPrice}
                 step={5000}
-                value={filters.minPrice ?? 400000}
+                value={filters.minPrice}
                 onChange={(value) => onChange({ ...filters, minPrice: value ?? 0 })}
-                formatter={(value) => (value === undefined || value === null ? '' : `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.'))}
-                parser={(value) => value.replace(/\$\s?|(\.)/g, '')}
+                formatter={formatPriceInput}
+                parser={parsePriceInput}
                 aria-label="Precio mínimo"
+                data-testid="search-price-min-input"
               />
               <Slider
                 id="filtro-precio-hibrido"
@@ -97,23 +129,28 @@ export default function SearchBar({ filters, onChange, resultCount }) {
                 min={400000}
                 max={1000000}
                 step={5000}
-                value={[filters.minPrice ?? 400000, filters.maxPrice]}
-                onChange={(value) => onChange({ ...filters, minPrice: value[0], maxPrice: value[1] })}
+                value={[filters.minPrice, filters.maxPrice]}
+                onChange={(value) => {
+                  if (!Array.isArray(value)) return
+                  onChange({ ...filters, minPrice: value[0], maxPrice: value[1] })
+                }}
                 tooltip={{ formatter: (value) => formatMonthlyPrice(value ?? 0) }}
+                data-testid="search-price-slider"
               />
               <InputNumber
                 className={styles.priceInlineInput}
                 style={{ width: 168 }}
                 size="large"
                 controls={false}
-                min={filters.minPrice ?? 0}
+                min={filters.minPrice}
                 max={1000000}
                 step={5000}
                 value={filters.maxPrice}
                 onChange={(value) => onChange({ ...filters, maxPrice: value ?? 1000000 })}
-                formatter={(value) => (value === undefined || value === null ? '' : `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.'))}
-                parser={(value) => value.replace(/\$\s?|(\.)/g, '')}
+                formatter={formatPriceInput}
+                parser={parsePriceInput}
                 aria-label="Precio máximo"
+                data-testid="search-price-max-input"
               />
             </div>
           </Col>
@@ -127,13 +164,14 @@ export default function SearchBar({ filters, onChange, resultCount }) {
         <Tag.CheckableTagGroup
           multiple
           aria-labelledby="caracteristicas-legend"
+          data-testid="search-characteristics-chips"
           options={characteristicOptions.map((c) => ({ value: c.key, label: c.label }))}
           value={filters.characteristics}
           onChange={(values) => onChange({ ...filters, characteristics: values })}
         />
       </div>
 
-      <p className={styles.resultCount} role="status">
+      <p className={styles.resultCount} role="status" data-testid="search-result-count">
         {resultCount} {resultCount === 1 ? 'propiedad encontrada' : 'propiedades encontradas'}
       </p>
     </Card>

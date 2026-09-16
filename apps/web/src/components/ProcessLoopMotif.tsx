@@ -1,6 +1,13 @@
+import type { ReactNode } from 'react'
 import styles from './ProcessLoopMotif.module.css'
 
-const nodes = [
+interface LoopNode {
+  cx: number
+  cy: number
+  icon: ReactNode
+}
+
+const nodes: LoopNode[] = [
   {
     // Buscar
     cx: 100,
@@ -50,7 +57,22 @@ const nodes = [
 
 const nodeClasses = [styles.loopNode0, styles.loopNode1, styles.loopNode2, styles.loopNode3]
 
-export default function ProcessLoopMotif({ className }) {
+/** Props de {@link ProcessLoopMotif}. */
+interface ProcessLoopMotifProps {
+  /** Clases extra para posicionar el contenedor desde el componente padre (ej. Hero). */
+  className?: string
+}
+
+/**
+ * Pieza insignia del sistema de diseño: diagrama circular animado de las 4
+ * etapas del proceso (buscar → contactar → firmar → pagar), con un punto
+ * dorado que recorre el círculo y pulsa cada nodo al llegar. Cada nodo se
+ * envuelve en un `<g>` de posicionamiento estático + un `<g>` interno
+ * animado (ver DESIGN.md, "Do's and Don'ts") porque mezclar el atributo
+ * `transform` de posicionamiento con una animación CSS de `transform` en el
+ * mismo nodo SVG hace que el navegador descarte el atributo.
+ */
+export default function ProcessLoopMotif({ className }: ProcessLoopMotifProps) {
   return (
     <div className={`${styles.container} ${className ?? ''}`} aria-hidden="true">
       <svg viewBox="0 0 200 200" className={styles.svg}>

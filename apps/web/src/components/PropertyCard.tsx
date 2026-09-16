@@ -1,15 +1,28 @@
 import Image from 'next/image'
 import { Button, Card } from 'antd'
+import type { PropertyType } from '@rentar/shared-types'
 import { formatMonthlyPrice } from '@/lib/utils/format'
+import type { MockProperty } from '@/lib/data/properties.mock'
 import styles from './PropertyCard.module.css'
 
-const typeLabels = {
+const typeLabels: Record<PropertyType, string> = {
   departamento: 'Departamento',
   casa: 'Casa',
   ph: 'PH',
 }
 
-export default function PropertyCard({ property }) {
+/** Props de {@link PropertyCard}. */
+interface PropertyCardProps {
+  /** Propiedad a mostrar, con la imagen ya resuelta por `next/image`. */
+  property: MockProperty
+}
+
+/**
+ * Tarjeta de una propiedad. Se usa en el grid de resultados de la landing
+ * (`PropertyGrid`) y como ejemplo en vivo en la sección "Tarjetas" de
+ * `/design-system`.
+ */
+export default function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Card
       hoverable
@@ -41,7 +54,11 @@ export default function PropertyCard({ property }) {
 
       <div className={styles.footerRow}>
         <p className={styles.price}>{formatMonthlyPrice(property.priceMonthly)}</p>
-        <Button size="small" style={{ background: '#E3F2FB', color: '#004D98', border: 'none' }}>
+        <Button
+          size="small"
+          style={{ background: '#E3F2FB', color: '#004D98', border: 'none' }}
+          data-testid="property-card-detail-button"
+        >
           Ver detalle
         </Button>
       </div>

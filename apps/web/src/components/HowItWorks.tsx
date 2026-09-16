@@ -3,7 +3,12 @@
 import { useInView } from '@/hooks/useInView'
 import styles from './HowItWorks.module.css'
 
-const steps = [
+interface Step {
+  title: string
+  description: string
+}
+
+const steps: Step[] = [
   {
     title: 'Buscá',
     description: 'Filtrá por zona, precio y tipología entre publicaciones directas de dueños.',
@@ -22,8 +27,17 @@ const steps = [
   },
 ]
 
-function StepNode({ step, index }) {
-  const { ref, inView } = useInView(0.4)
+interface StepNodeProps {
+  step: Step
+  index: number
+}
+
+/**
+ * Un paso del timeline. Usa `useInView` para animar su entrada/salida en
+ * scroll, con un delay escalonado según su posición (`index * 150ms`).
+ */
+function StepNode({ step, index }: StepNodeProps) {
+  const { ref, inView } = useInView<HTMLLIElement>(0.4)
 
   return (
     <li
@@ -40,6 +54,10 @@ function StepNode({ step, index }) {
   )
 }
 
+/**
+ * Sección "De la búsqueda a las llaves, sin intermediarios": timeline
+ * numerado de las 4 etapas del proceso, con scroll-reveal por paso.
+ */
 export default function HowItWorks() {
   return (
     <section id="como-funciona" className={styles.section}>

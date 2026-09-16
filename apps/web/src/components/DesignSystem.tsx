@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { Button, Select, Slider, Tag } from 'antd'
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons'
@@ -14,7 +14,12 @@ import { defaultFilters, MAX_PRICE_CEILING } from '@/lib/types/filters'
 import { formatMonthlyPrice } from '@/lib/utils/format'
 import styles from './DesignSystem.module.css'
 
-const sections = [
+interface SectionLink {
+  id: string
+  label: string
+}
+
+const sections: SectionLink[] = [
   { id: 'vision-general', label: 'Visión general' },
   { id: 'colores', label: 'Colores' },
   { id: 'tipografia', label: 'Tipografía' },
@@ -32,7 +37,14 @@ const sections = [
   { id: 'reglas', label: "Do's y Don'ts" },
 ]
 
-const colors = [
+interface ColorSwatch {
+  name: string
+  hex: string
+  text: string
+  usage: string
+}
+
+const colors: ColorSwatch[] = [
   {
     name: 'Azul Escribanía',
     hex: '#004D98',
@@ -83,7 +95,15 @@ const colors = [
   },
 ]
 
-const typeSpecimens = [
+interface TypeSpecimen {
+  name: string
+  sample: string
+  style: CSSProperties
+  spec: string[]
+  usage: string
+}
+
+const typeSpecimens: TypeSpecimen[] = [
   {
     name: 'Display',
     sample: 'Alquilá directo, sin inmobiliaria',
@@ -131,7 +151,13 @@ const typeSpecimens = [
   },
 ]
 
-const spacing = [
+interface SpacingStep {
+  name: string
+  value: string
+  px: number
+}
+
+const spacing: SpacingStep[] = [
   { name: 'xs', value: '0.5rem', px: 8 },
   { name: 'sm', value: '1rem', px: 16 },
   { name: 'md', value: '1.5rem', px: 24 },
@@ -139,25 +165,29 @@ const spacing = [
   { name: 'xl', value: '4rem', px: 64 },
 ]
 
-const doList = [
+const doList: string[] = [
   'Mantener el dorado (#D7B15D / #8C6B1D) atado solo a dinero/valor: la línea de precio y el highlight de selección.',
   'Usar rounded-full en todo botón/badge/chip y rounded-2xl/rounded-3xl en contenedores — ningún otro radio.',
   'Animar la entrada/salida de una sección con un IntersectionObserver persistente que alterne en ambos sentidos.',
   'Envolver un elemento con animación de transform CSS en un <g> estático si el mismo nodo SVG tiene un atributo transform.',
 ]
 
-const dontList = [
+const dontList: string[] = [
   'Poner un "kicker" en mayúsculas justo arriba de un H1/H2/H3 — nunca, por más tentador que sea.',
   'Construir una sección nueva como una fila de tarjetas idénticas ícono + título + párrafo.',
   'Usar ink/60, ink/50 o el dorado crudo para texto de cualquier tamaño — caen debajo del piso de contraste 4.5:1.',
   'Sumar una segunda tipografía, un acento de borde de color, texto en degradé o una sombra dura tipo neobrutalista.',
 ]
 
-function useScrollSpy(ids) {
-  const [activeId, setActiveId] = useState(ids[0])
+/**
+ * Observa qué sección de `ids` está actualmente en el viewport (scroll-spy
+ * de la barra lateral de navegación de /design-system).
+ */
+function useScrollSpy(ids: string[]): string | undefined {
+  const [activeId, setActiveId] = useState<string | undefined>(ids[0])
 
   useEffect(() => {
-    const elements = ids.map((id) => document.getElementById(id)).filter(Boolean)
+    const elements = ids.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null)
     if (elements.length === 0) return
 
     const observer = new IntersectionObserver(
@@ -177,6 +207,7 @@ function useScrollSpy(ids) {
   return activeId
 }
 
+/** Demo en vivo de los dropdowns "Zona" y "Tipología" del buscador, con estado propio de solo lectura. */
 function DropdownsDemo() {
   const [neighborhoodSlug, setNeighborhoodSlug] = useState('todos')
   const [type, setType] = useState('todos')
@@ -192,7 +223,7 @@ function DropdownsDemo() {
             id="ds-filtro-barrio"
             className={styles.fieldControl}
             value={neighborhoodSlug}
-            onChange={setNeighborhoodSlug}
+            onChange={(value: string) => setNeighborhoodSlug(value)}
             options={[
               { value: 'todos', label: 'Todos los barrios' },
               ...neighborhoods.map((n) => ({ value: n.slug, label: n.name })),
@@ -207,7 +238,7 @@ function DropdownsDemo() {
             id="ds-filtro-tipologia"
             className={styles.fieldControl}
             value={type}
-            onChange={setType}
+            onChange={(value: string) => setType(value)}
             options={[
               { value: 'todos', label: 'Todas' },
               { value: 'departamento', label: 'Departamento' },
@@ -221,6 +252,7 @@ function DropdownsDemo() {
   )
 }
 
+/** Demo en vivo del slider de precio máximo. */
 function SliderDemo() {
   const [maxPrice, setMaxPrice] = useState(MAX_PRICE_CEILING)
 
@@ -235,15 +267,19 @@ function SliderDemo() {
         max={MAX_PRICE_CEILING}
         step={5000}
         value={maxPrice}
-        onChange={setMaxPrice}
+        onChange={(value) => {
+          if (Array.isArray(value)) return
+          setMaxPrice(value)
+        }}
         tooltip={{ formatter: (value) => formatMonthlyPrice(value ?? 0) }}
       />
     </div>
   )
 }
 
+/** Demo en vivo de las chips de características (multi-select). */
 function ChipsDemo() {
-  const [selected, setSelected] = useState(['amoblado'])
+  const [selected, setSelected] = useState<string[]>(['amoblado'])
   const options = [
     { value: 'amoblado', label: 'Amoblado' },
     { value: 'mascotas', label: 'Acepta mascotas' },
@@ -253,16 +289,16 @@ function ChipsDemo() {
 
   return (
     <div className={styles.chipDemoCard}>
-      <Tag.CheckableTagGroup
-        multiple
-        options={options}
-        value={selected}
-        onChange={setSelected}
-      />
+      <Tag.CheckableTagGroup multiple options={options} value={selected} onChange={setSelected} />
     </div>
   )
 }
 
+/**
+ * Página `/design-system`: referencia visual e interactiva de los tokens y
+ * componentes del sistema de diseño de RentAR (ver docs/DESIGN.md), armada
+ * con los mismos componentes en producción (no capturas ni duplicados).
+ */
 export default function DesignSystem() {
   const activeId = useScrollSpy(sections.map((s) => s.id))
   const demoProperty = properties[0]
@@ -525,7 +561,7 @@ export default function DesignSystem() {
             <div className={styles.liveFrame}>
               <div className={styles.liveFrameLabel}>
                 <span className={styles.liveFrameDot} />
-                components/PropertyCard.jsx (ejemplo real)
+                components/PropertyCard.tsx (ejemplo real)
               </div>
               <div className={styles.liveFramePadded}>
                 <div className={styles.cardDemoWrap}>
@@ -545,7 +581,7 @@ export default function DesignSystem() {
             <div className={styles.liveFrame}>
               <div className={styles.liveFrameLabel}>
                 <span className={styles.liveFrameDot} />
-                components/SearchBar.jsx (interactivo)
+                components/SearchBar.tsx (interactivo)
               </div>
               <div className={styles.liveFramePadded}>
                 <SearchBar
@@ -594,7 +630,7 @@ export default function DesignSystem() {
             <div className={styles.liveFrame}>
               <div className={styles.liveFrameLabel}>
                 <span className={styles.liveFrameDot} />
-                components/HowItWorks.jsx
+                components/HowItWorks.tsx
               </div>
               <HowItWorks />
             </div>

@@ -1,9 +1,26 @@
 import { Button } from 'antd'
+import type { FilterState } from '@rentar/shared-types'
 import ProcessLoopMotif from './ProcessLoopMotif'
 import SearchBar from './SearchBar'
 import styles from './Hero.module.css'
 
-export default function Hero({ filters, onChange, resultCount }) {
+/** Props de {@link Hero}. */
+interface HeroProps {
+  /** Estado actual de los filtros de búsqueda, delegado a `SearchBar`. */
+  filters: FilterState
+  /** Notifica un cambio de filtros hacia el estado de `Landing`. */
+  onChange: (filters: FilterState) => void
+  /** Cantidad de propiedades que matchean los filtros actuales. */
+  resultCount: number
+}
+
+/**
+ * Sección de apertura de la landing: headline, CTAs principales, el motivo
+ * animado del proceso (`ProcessLoopMotif`) y el buscador (`SearchBar`),
+ * que se superpone al borde inferior del hero con margen negativo para leerse
+ * como una sola pieza con la sección siguiente.
+ */
+export default function Hero({ filters, onChange, resultCount }: HeroProps) {
   return (
     <section id="inicio" className={styles.section}>
       <div className={styles.inner}>
@@ -16,10 +33,15 @@ export default function Hero({ filters, onChange, resultCount }) {
             </p>
             <p className={styles.pilot}>Piloto en Córdoba Capital</p>
             <div className={styles.ctaRow}>
-              <Button type="primary" size="large" href="#buscar">
+              <Button type="primary" size="large" href="#buscar" data-testid="hero-search-cta">
                 Buscar propiedades
               </Button>
-              <Button size="large" href="#como-funciona" className={styles.ghostButton}>
+              <Button
+                size="large"
+                href="#como-funciona"
+                className={styles.ghostButton}
+                data-testid="hero-how-it-works-cta"
+              >
                 Ver cómo funciona
               </Button>
             </div>

@@ -2,6 +2,7 @@ import Image from 'next/image'
 import logo from '@/assets/logo-rentar.svg'
 import styles from './Footer.module.css'
 
+/** Pie de página de la landing: logo, tagline, links de ancla y nota legal. */
 export default function Footer() {
   return (
     <footer className={styles.footer}>
