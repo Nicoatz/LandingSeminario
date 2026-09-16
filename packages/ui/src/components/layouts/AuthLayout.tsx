@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import Image from 'next/image'
 import logo from '../../assets/logo-rentar.svg'
 import styles from './AuthLayout.module.css'
 
@@ -23,7 +22,7 @@ export function AuthLayout({ title, subtitle, children, compact = false, ...rest
   return (
     <div className={`${styles.wrap} ${compact ? styles.wrapCompact : ''}`} {...rest}>
       <div className={styles.card}>
-        <Image src={logo} alt="RentAR" className={styles.logo} priority />
+        <img src={logo.src} alt="RentAR" className={styles.logo} loading="eager" />
         <div className={styles.titleGroup}>
           <h1 className={styles.title}>{title}</h1>
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}

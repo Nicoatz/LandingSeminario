@@ -1,8 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { Button, Drawer } from 'antd'
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons'
 import { seed } from '../tokens/primitives'
@@ -21,7 +19,7 @@ export function Header() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <a href="#inicio" className={styles.logoLink}>
-          <Image src={logo} alt="RentAR" style={{ height: '2.75rem', width: 'auto' }} priority />
+          <img src={logo.src} alt="RentAR" style={{ height: '2.75rem', width: 'auto' }} loading="eager" />
           <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
             RentAR — inicio
           </span>
@@ -30,7 +28,7 @@ export function Header() {
         <nav aria-label="Navegación principal" className={styles.nav}>
           <a href="#buscar">Buscar propiedades</a>
           <a href="#como-funciona">Cómo funciona</a>
-          <Link href="/design-system">Sistema de diseño</Link>
+          <a href="/design-system">Sistema de diseño</a>
         </nav>
 
         <div className={styles.desktopActions}>
@@ -57,7 +55,7 @@ export function Header() {
 
       <Drawer
         id="mobile-menu"
-        title={<Image src={logo} alt="RentAR" style={{ height: '2.25rem', width: 'auto' }} />}
+        title={<img src={logo.src} alt="RentAR" style={{ height: '2.25rem', width: 'auto' }} />}
         placement="right"
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
@@ -71,9 +69,9 @@ export function Header() {
           <a href="#como-funciona" onClick={() => setMenuOpen(false)}>
             Cómo funciona
           </a>
-          <Link href="/design-system" onClick={() => setMenuOpen(false)}>
+          <a href="/design-system" onClick={() => setMenuOpen(false)}>
             Sistema de diseño
-          </Link>
+          </a>
           <div className={styles.drawerActions}>
             <Button type="text" style={{ color: seed.blue, fontWeight: 600, textAlign: 'left' }} block>
               Iniciar sesión

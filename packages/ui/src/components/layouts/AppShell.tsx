@@ -1,8 +1,6 @@
 'use client'
 
 import { useState, type ReactNode } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { Drawer, Layout, Menu } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
 import type { UserRole } from '@rentar/shared-types'
@@ -64,9 +62,9 @@ export function AppShell({
     key: item.key,
     icon: item.icon,
     label: (
-      <Link href={item.href} onClick={() => setMobileOpen(false)}>
+      <a href={item.href} onClick={() => setMobileOpen(false)}>
         {item.label}
-      </Link>
+      </a>
     ),
   }))
 
@@ -74,7 +72,7 @@ export function AppShell({
     <Layout className={`${styles.layout} ${compact ? styles.layoutCompact : ''}`} {...rest}>
       <Sider width={240} className={styles.sider}>
         <div className={styles.logoWrap}>
-          <Image src={logo} alt="RentAR" style={{ height: '2rem', width: 'auto' }} />
+          <img src={logo.src} alt="RentAR" style={{ height: '2rem', width: 'auto' }} />
         </div>
         <Menu mode="inline" selectedKeys={[activeKey]} items={menuItems} style={{ borderInlineEnd: 'none' }} />
       </Sider>
@@ -88,7 +86,7 @@ export function AppShell({
         styles={{ body: { padding: 0 } }}
       >
         <div className={styles.logoWrap}>
-          <Image src={logo} alt="RentAR" style={{ height: '2rem', width: 'auto' }} />
+          <img src={logo.src} alt="RentAR" style={{ height: '2rem', width: 'auto' }} />
         </div>
         <Menu mode="inline" selectedKeys={[activeKey]} items={menuItems} style={{ borderInlineEnd: 'none' }} />
       </Drawer>

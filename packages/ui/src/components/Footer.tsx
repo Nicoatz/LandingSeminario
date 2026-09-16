@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import logo from '../assets/logo-rentar.svg'
 import styles from './Footer.module.css'
 
@@ -9,7 +8,7 @@ export function Footer() {
       <div className={styles.inner}>
         <div className={styles.top}>
           <div>
-            <Image src={logo} alt="RentAR" style={{ height: '2.25rem', width: 'auto' }} />
+            <img src={logo.src} alt="RentAR" style={{ height: '2.25rem', width: 'auto' }} />
             <p className={styles.tagline}>
               Alquileres residenciales de larga duración entre particulares. Piloto en la
               ciudad de Córdoba, Argentina.

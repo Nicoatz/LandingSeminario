@@ -14,4 +14,10 @@
 // --rentar-* disponibles.
 import './tokens/css-vars.css'
 
+// League Spartan: la app real la carga vía next/font/google (self-hosted
+// en el build de Next). Ese mecanismo no existe fuera de Next.js, así que
+// acá se resuelve con un @import de Google Fonts en runtime — ver el
+// comentario de cabecera de design-sync-fonts.css.
+import './design-sync-fonts.css'
+
 export * from './index'

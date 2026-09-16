@@ -1,0 +1,20 @@
+/*
+ * Solo para el bundle de /design-sync (ver design-sync-entry.ts) — la app
+ * real (apps/web) carga League Spartan con `next/font/google`, que la
+ * self-hostea en el build de Next.js y no queda accesible desde acá. Las
+ * previews que arma Claude Design no pasan por ese build, así que cargan
+ * la misma tipografía desde Google Fonts en runtime.
+ */
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&display=swap');
+
+/*
+ * apps/web pone `font-family` en `body` vía globals.css (con la variable de
+ * next/font). Acá no hay globals.css ni next/font, así que sin esta regla
+ * cualquier elemento propio que no pase por un token de antd (ej. los <a>
+ * de Header.tsx, que heredan el font-family de body) cae al serif por
+ * default del navegador — confirmado mirando el screenshot de Header en la
+ * hoja de contacto del validador.
+ */
+body {
+  font-family: 'League Spartan', system-ui, sans-serif;
+}

@@ -1,5 +1,6 @@
 export { Header } from './Header'
 export { Footer } from './Footer'
+export { ThemeProvider } from './ThemeProvider'
 export * from './layouts'
 export * from './navigation'
 export * from './data'
