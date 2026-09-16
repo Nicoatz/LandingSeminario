@@ -5,7 +5,8 @@ import { theme as antdThemeApi, type ThemeConfig } from 'antd'
 // layout raíz, un Server Component, donde Context no está disponible —
 // pasar por el barrel rompería el build con "createContext is not a
 // function" aunque este archivo no use statusMeta para nada.
-import { colorScales, radii, seed, shadows, typography } from './tokens/primitives'
+import { generate } from '@ant-design/colors'
+import { colorScales, radii, seed, shadows, statusVivid, typography } from './tokens/primitives'
 import { light, dark } from './tokens/semantic'
 
 /**
@@ -28,6 +29,24 @@ export const brand = {
 } as const
 
 /**
+ * Fondo/borde claro de `StatusTag` (`colorSuccessBg`/`colorSuccessBorder`,
+ * etc.), derivados de `statusVivid` — no de los tonos "ink" de `light.*`,
+ * que dan un pastel sucio como semilla de `generate()` (ver el comentario
+ * en `tokens/primitives.ts`). El texto/ícono del tag sigue usando el tono
+ * ink (`colorSuccess`, etc. más abajo) sin cambios.
+ */
+const statusBg = {
+  success: generate(statusVivid.success)[0],
+  warning: generate(statusVivid.warning)[0],
+  error: generate(statusVivid.error)[0],
+} as const
+const statusBorder = {
+  success: generate(statusVivid.success)[2],
+  warning: generate(statusVivid.warning)[2],
+  error: generate(statusVivid.error)[2],
+} as const
+
+/**
  * Tema claro (`ConfigProvider`), con `cssVar: true`: además de aplicarse a
  * los componentes de antd, expone cada token como `var(--ant-*)` en el DOM,
  * así los `.module.css` propios pueden consumirlos en vez de hardcodear
@@ -43,6 +62,17 @@ export const antdTheme: ThemeConfig = {
     colorSuccess: light.success,
     colorWarning: light.warning,
     colorError: light.error,
+    // Fondo/borde de StatusTag — ver el comentario de statusBg/statusBorder
+    // más arriba. colorInfo reutiliza el celeste de marca ya tokenizado
+    // (brand.skyLight/seed.sky), no necesita una semilla nueva.
+    colorSuccessBg: statusBg.success,
+    colorSuccessBorder: statusBorder.success,
+    colorWarningBg: statusBg.warning,
+    colorWarningBorder: statusBorder.warning,
+    colorErrorBg: statusBg.error,
+    colorErrorBorder: statusBorder.error,
+    colorInfoBg: brand.skyLight,
+    colorInfoBorder: seed.sky,
     colorLink: brand.blue,
     colorLinkHover: brand.blueDark,
     colorText: light.textPrimary,

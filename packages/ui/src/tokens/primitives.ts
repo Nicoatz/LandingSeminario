@@ -42,6 +42,23 @@ export const colorScales = {
 } as const
 
 /**
+ * Semillas "vívidas" — SOLO para derivar el fondo/borde claro de los
+ * `StatusTag` (`colorSuccessBg`, etc. en theme.ts), nunca para texto. Los
+ * tonos "ink" de `semantic.ts` (`light.success` = `#166534`, etc.) son la
+ * semilla correcta para texto legible, pero como semilla de `generate()`
+ * dan un fondo sucio: el algoritmo necesita una luminosidad de partida
+ * ≥~40% para devolver un pastel limpio en el primer paso — con un tono tan
+ * oscuro devuelve un gris verdoso apagado en vez de un pastel (confirmado a
+ * mano: `generate('#166534')[0]` da `#9ca69e`, no un verde claro).
+ * Elegidas con el mismo hue que su tono "ink" correspondiente.
+ */
+export const statusVivid = {
+  success: '#22C55E',
+  warning: '#EA580C',
+  error: '#E11D48',
+} as const
+
+/**
  * Mismas escalas, recalculadas para fondo oscuro (usadas por el tema dark
  * del catálogo). Ojo: acá el índice va de oscuro (paso "50") a claro (paso
  * "900") — al revés que en `colorScales`, donde "50" es el más claro y
